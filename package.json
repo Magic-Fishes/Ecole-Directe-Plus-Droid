@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon"
   },
-  "author": "MATRISM :)",
+  "author": "MATRISM :) / in collaboration with Ewalwi",
   "license": "ISC",
   "dependencies": {
     "abort-controller": "^3.0.0",

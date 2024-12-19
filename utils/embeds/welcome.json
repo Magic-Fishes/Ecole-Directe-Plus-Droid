@@ -1,0 +1,10 @@
+{
+    "title": "Bienvenue parmi nous ! 👋",
+    "description": "Salut {member}, nous sommes heureux de t'annoncer que tu es le **{member_count}ème membre** à nous rejoindre ! 🥳\n\nComme tout nouvel arrivant qui se respecte, nous t'encourageons à venir faire un petit coucou dans le salon https://discord.com/channels/1130436199664844831/1170357852846686228. 😁\n\nSi tu as la moindre question ou inquiétude, n'hésite pas à solliciter la commu 💬, ou mieux, la Team Dev 🦾, et nous nous ferons une joie de t'accompagner dans ton aventure 🗺️.\n\nFinalement, si tu es un petit geek (ou un bon hein on prend aussi 😉), nous t'invitons à rejoindre la team dev en récupérant le rôle ici https://discord.com/channels/1130436199664844831/1192290091712913541 😎, tu auras accès à des salons réservés au développement dans lesquels nos développeurs seront ravis de faire ta connaissance 🫡.\n\nPasse un bon moment et amuse-toi sur Ecole Directe Plus ! ❤️",
+    "colour": 4279055,
+    "author": {
+      "name": "Ecole Directe Plus",
+      "url": "https://www.ecole-directe.plus/",
+      "icon_url": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png"
+    }
+}
