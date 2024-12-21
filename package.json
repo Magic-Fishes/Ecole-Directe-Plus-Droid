@@ -4,6 +4,7 @@
   "description": "The Droid of Ecole Directe Plus website",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon"
   },
   "author": "MATRISM :) / in collaboration with Ewalwi",
