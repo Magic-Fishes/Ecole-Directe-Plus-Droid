@@ -1,11 +1,11 @@
-const EmbedBuilder = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
 module.exports = {
     name: "welcome",
     description: "send a welcome message to a user",
-    run: async (client, interaction) => {
+    callback: async (client, interaction) => {
 
         const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../utils/embeds/welcome.json'), 'utf8'));
 
