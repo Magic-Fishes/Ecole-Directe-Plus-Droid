@@ -6,12 +6,16 @@ module.exports = {
     name: "welcome",
     description: "send a welcome message to a user",
     callback: async (client, interaction) => {
+        const member = interaction.member;
+        const memberCount = member.guild.memberCount;
 
         const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../utils/embeds/welcome.json'), 'utf8'));
 
+        const description = embedData.description.replace("{member_count}", memberCount)
+
         const welcomingEmbed = new EmbedBuilder()
             .setTitle(embedData.title)
-            .setDescription(embedData.description)
+            .setDescription(description)
             .setColor(embedData.color)
             .setAuthor({
                 name: embedData.author.name,
