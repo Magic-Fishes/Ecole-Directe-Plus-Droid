@@ -1,2 +1,2 @@
 # EDP-Droid
-### by AS DE PIQUE & Ewalwi
+### by As De Pique & Ewalwi
