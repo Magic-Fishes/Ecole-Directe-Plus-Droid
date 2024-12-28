@@ -1,2 +1,2 @@
 # EDP-Droid
-### by MATRISM & Ewalwi
+### by As De Pique & Ewalwi
