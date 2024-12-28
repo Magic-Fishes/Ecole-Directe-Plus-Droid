@@ -7,7 +7,7 @@ module.exports = {
     async execute(member) {
         const memberCount = member.guild.memberCount;
 
-        const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../utils/embeds/welcome.json'), 'utf8'));
+        const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../embeds/welcome.json'), 'utf8'));
 
         const description = embedData.description.replace("{member_count}", memberCount).replace("{member}", member.user.tag);
 
