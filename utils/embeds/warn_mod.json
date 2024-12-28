@@ -1,5 +1,5 @@
 {
     "title": "🚨 Signalement de Comportement Inapproprié 🚨",
     "description": "{modos.mention}, un comportement inapproprié a été détecté de la part de **{message.author}**.\nVeuillez envisager de prendre des mesures, y compris un mute si nécessaire. Le message a d'ores et déjà été supprimé. **{message.author.name, message.content}**",
-    "color": 16711680
+    "color": "#b00000"
 }
