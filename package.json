@@ -17,9 +17,12 @@
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "fs": "^0.0.1-security",
+    "glob": "^11.0.0",
     "groq-sdk": "^0.9.1",
     "nodemon": "^3.1.0",
     "path": "^0.12.7",
+    "promisify": "^0.0.3",
+    "util": "^0.12.5",
     "ws": "^8.18.0"
   },
   "devDependencies": {
