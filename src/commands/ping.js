@@ -1,10 +1,7 @@
 module.exports = {
     name: "ping",
-    description: "PING :ping_pong:",
-    options: [],
-    runSlash: (_, interaction) => {
-        interaction.reply({
-            "content": `Pong to ${interaction.user} :ping_pong: !`
-        })
-    }
-}
+    description: "Répond avec Pong!",
+    runSlash: async (client, interaction) => {
+        await interaction.reply("Pong!");
+    },
+};
