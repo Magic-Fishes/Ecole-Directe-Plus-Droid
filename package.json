@@ -10,25 +10,10 @@
   "author": "MATRISM :) / in collaboration with Ewalwi",
   "license": "ISC",
   "dependencies": {
-    "abort-controller": "^3.0.0",
-    "cli-chart": "^0.3.1",
-    "cli-table3": "^0.6.5",
-    "cors": "^2.8.5",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
-    "fs": "^0.0.1-security",
     "glob": "^11.0.0",
     "groq-sdk": "^0.9.1",
-    "nodemon": "^3.1.0",
-    "path": "^0.12.7",
-    "promisify": "^0.0.3",
-    "util": "^0.12.5",
-    "ws": "^8.18.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.3.0",
-    "eslint": "^9.3.0",
-    "globals": "^15.3.0",
-    "prettier": "^3.3.3"
+    "nodemon": "^3.1.0"
   }
 }
