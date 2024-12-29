@@ -1,19 +1,20 @@
 {
-  "name": "edp-droid",
-  "version": "1.0.0",
-  "description": "The Droid of Ecole Directe Plus website",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon"
-  },
-  "author": "MATRISM :) / in collaboration with Ewalwi",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5",
-    "glob": "^11.0.0",
-    "groq-sdk": "^0.9.1",
-    "nodemon": "^3.1.0"
-  }
+    "name": "edp-droid",
+    "version": "1.0.0",
+    "description": "The Droid of Ecole Directe Plus website",
+    "main": "index.js",
+    "scripts": {
+        "format": "npx prettier --write \"**/*.js\"",
+        "dev": "nodemon"
+    },
+    "author": "As De Pique :) / in collaboration with Ewalwi",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^14.16.3",
+        "dotenv": "^16.4.5",
+        "glob": "^11.0.0",
+        "groq-sdk": "^0.9.1",
+        "nodemon": "^3.1.0",
+        "prettier": "^3.4.2"
+    }
 }

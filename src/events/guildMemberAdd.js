@@ -7,9 +7,16 @@ module.exports = {
     async execute(member) {
         const memberCount = member.guild.memberCount;
 
-        const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../embeds/welcome.json'), 'utf8'));
+        const embedData = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "../embeds/welcome.json"),
+                "utf8"
+            )
+        );
 
-        const description = embedData.description.replace("{member_count}", memberCount).replace("{member}", member.user.tag);
+        const description = embedData.description
+            .replace("{member_count}", memberCount)
+            .replace("{member}", member.user.tag);
 
         const welcomingEmbed = new EmbedBuilder()
             .setTitle(embedData.title)
@@ -24,7 +31,9 @@ module.exports = {
         try {
             await member.send({ embeds: [welcomingEmbed] });
         } catch (error) {
-            console.error(`Action denided : couldn't send a private message to ${member.user.tag}`);
+            console.error(
+                `Action denided : couldn't send a private message to ${member.user.tag}`
+            );
         }
     },
 };

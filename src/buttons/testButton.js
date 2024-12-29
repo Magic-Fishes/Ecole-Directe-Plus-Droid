@@ -4,6 +4,6 @@ module.exports = {
         interaction.reply({
             content: `Here is your id : ${interaction.member.id}`,
             ephemeral: true,
-        })
-    }
-}
+        });
+    },
+};

@@ -1,5 +1,5 @@
-const { SelectMenuBuilder } = require('@discordjs/builders');
-const { ActionRowBuilder } = require('discord.js');
+const { SelectMenuBuilder } = require("@discordjs/builders");
+const { ActionRowBuilder } = require("discord.js");
 
 module.exports = {
     name: "selects",
@@ -7,9 +7,9 @@ module.exports = {
     options: [],
     runSlash: (_, interaction) => {
         interaction.reply({
-            "content": `wanna play ?`,
-            components: [new ActionRowBuilder()
-                .addComponents(
+            content: `wanna play ?`,
+            components: [
+                new ActionRowBuilder().addComponents(
                     new SelectMenuBuilder()
                         .setCustomId("testSelect")
                         .setPlaceholder("Play shifoumi with me")
@@ -19,21 +19,21 @@ module.exports = {
                             {
                                 label: "Pierre",
                                 description: "Pierre",
-                                value: "0"
+                                value: "0",
                             },
                             {
                                 label: "Paper",
                                 description: "Papier",
-                                value: "1"
+                                value: "1",
                             },
                             {
                                 label: "Ciseaux",
                                 description: "Ciseaux",
-                                value: "2"
+                                value: "2",
                             },
                         ])
-                )
-            ]
-        })
-    }
-}
+                ),
+            ],
+        });
+    },
+};

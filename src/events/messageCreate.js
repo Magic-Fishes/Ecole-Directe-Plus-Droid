@@ -29,7 +29,9 @@ module.exports = {
                 .setColor(op_embed_data.color)
                 .setAuthor({
                     name: op_embed_data.author.name,
-                    url: op_embed_data.author.url || "https://www.ecole-directe.plus/",
+                    url:
+                        op_embed_data.author.url ||
+                        "https://www.ecole-directe.plus/",
                     iconURL: op_embed_data.author.icon_url,
                 });
 
@@ -37,7 +39,9 @@ module.exports = {
                 await message.author.send({ embeds: [op_embed] });
             } catch (error) {
                 if (error.code === 50007) {
-                    console.log("Impossible d'envoyer un message privé à l'utilisateur.");
+                    console.log(
+                        "Impossible d'envoyer un message privé à l'utilisateur."
+                    );
                 }
             }
             console.log("Utilisateur OP ignoré");
@@ -100,7 +104,9 @@ module.exports = {
                 await member.send({ embeds: [userWarnEmbed] });
             } catch (error) {
                 if (error.code === 50007) {
-                    console.log("Impossible d'envoyer un message privé à l'utilisateur.");
+                    console.log(
+                        "Impossible d'envoyer un message privé à l'utilisateur."
+                    );
                 }
             }
 

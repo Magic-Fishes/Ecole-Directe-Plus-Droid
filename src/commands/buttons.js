@@ -1,6 +1,6 @@
-const { ButtonBuilder } = require('@discordjs/builders');
-const { ButtonStyle } = require('discord.js');
-const { ActionRowBuilder } = require('discord.js');
+const { ButtonBuilder } = require("@discordjs/builders");
+const { ButtonStyle } = require("discord.js");
+const { ActionRowBuilder } = require("discord.js");
 
 module.exports = {
     name: "button",
@@ -8,9 +8,9 @@ module.exports = {
     options: [],
     runSlash: (_, interaction) => {
         interaction.reply({
-            "content": `Click !!!`,
-            components: [new ActionRowBuilder()
-                .addComponents(
+            content: `Click !!!`,
+            components: [
+                new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
                         .setCustomId("testButton")
                         .setLabel("hi !")
@@ -22,9 +22,9 @@ module.exports = {
                     new ButtonBuilder()
                         .setLabel("See this !")
                         .setURL("https://saumon-brule.dev")
-                        .setStyle(ButtonStyle.Link),
-                )
-            ]
-        })
-    }
-}
+                        .setStyle(ButtonStyle.Link)
+                ),
+            ],
+        });
+    },
+};

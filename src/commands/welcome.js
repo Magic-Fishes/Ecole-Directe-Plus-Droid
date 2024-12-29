@@ -10,9 +10,17 @@ module.exports = {
         const member = interaction.member;
         const memberCount = member.guild.memberCount;
 
-        const embedData = JSON.parse(fs.readFileSync(path.join(__dirname, '../embeds/welcome.json'), 'utf8'));
+        const embedData = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "../embeds/welcome.json"),
+                "utf8"
+            )
+        );
 
-        const description = embedData.description.replace("{member_count}", memberCount);
+        const description = embedData.description.replace(
+            "{member_count}",
+            memberCount
+        );
 
         const welcomingEmbed = new EmbedBuilder()
             .setTitle(embedData.title)

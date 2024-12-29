@@ -4,6 +4,6 @@ module.exports = {
         interaction.reply({
             content: `:+1:`,
             ephemeral: true,
-        })
-    }
-}
+        });
+    },
+};
