@@ -9,8 +9,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 module.exports = {
     name: Events.MessageCreate,
-    async execute(message) {
-        console.log(message);
+    async execute(client, message) {
         if (
             message.author.id === client.user.id ||
             (message.content.endsWith(".safemsg") &&
@@ -48,7 +47,7 @@ module.exports = {
             return;
         }
         const mod_role = message.guild.roles.cache.find(
-            (role) => role.id === "1243819900376449024"
+            (role) => role.id === "1319230810691207209"
         ); // reel: "1170362568297164820"
         const mod_channel = message.guild.channels.cache.find(
             (channel) => channel.id === "1318947548563636324"
@@ -58,6 +57,7 @@ module.exports = {
         ); // reel: "1170357852846686228"
         const member = message.member;
         const content = message.content.toLowerCase();
+
         let ai_detection = "pass";
 
         async function getGroqChatCompletion() {
@@ -116,10 +116,10 @@ module.exports = {
                     "utf8"
                 )
             );
-
             let description = modWarnEmbedContent.description
                 .replace("{modos.mention}", mod_role.tag)
-                .replace("{message.author}", member.user.tag)
+                .replace("{message.author}", member.user.username)
+                .replace("{message.author.name}", member.user.globalName)
                 .replace("{message.content}", message.content);
 
             const modWarnEmbed = new EmbedBuilder()
@@ -135,11 +135,10 @@ module.exports = {
                     "utf8"
                 )
             );
-
-            description = comAlertEmbedContent.description.replace(
-                "{message.author}",
-                member.user.tag
-            );
+            // console.log(member);
+            description = comAlertEmbedContent.description
+                .replace("{message.author}", member.user.tag)
+                .replace("{message.globalName}", member.user.globalName);
 
             const comAlertEmbed = new EmbedBuilder()
                 .setTitle(comAlertEmbedContent.title)

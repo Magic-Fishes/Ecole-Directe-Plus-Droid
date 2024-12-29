@@ -4,8 +4,10 @@ const path = require("path");
 
 module.exports = {
     name: Events.GuildMemberAdd,
-    async execute(member) {
-        const memberCount = member.guild.memberCount;
+    async execute(client, guildMember) {
+        const channel = guildMember.guild.channels.cache.get(
+            "1323040960501776496"
+        ); // real: 1130436200591794231
 
         const embedData = JSON.parse(
             fs.readFileSync(
@@ -15,8 +17,8 @@ module.exports = {
         );
 
         const description = embedData.description
-            .replace("{member_count}", memberCount)
-            .replace("{member}", member.user.tag);
+            .replace("{member_count}", guildMember.guild.memberCount)
+            .replace("{member}", guildMember.user.globalName);
 
         const welcomingEmbed = new EmbedBuilder()
             .setTitle(embedData.title)
@@ -29,10 +31,14 @@ module.exports = {
             });
 
         try {
-            await member.send({ embeds: [welcomingEmbed] });
+            if (channel && channel.isTextBased()) {
+                await channel.send({ embeds: [welcomingEmbed] });
+            } else {
+                console.error("Channel not found or not a text channel.");
+            }
         } catch (error) {
             console.error(
-                `Action denided : couldn't send a private message to ${member.user.tag}`
+                `Action denided : couldn't send a private message to ${client.user.tag}`
             );
         }
     },

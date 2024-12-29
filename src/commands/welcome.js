@@ -1,11 +1,18 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
 module.exports = {
     name: "welcome",
     description: "Bienvenue à un utilisateur",
-    options: [],
+    options: [
+        {
+            name: "user",
+            description: "Select a user",
+            type: ApplicationCommandOptionType.User,
+            required: false,
+        },
+    ],
     runSlash: async (_, interaction) => {
         const member = interaction.member;
         const memberCount = member.guild.memberCount;

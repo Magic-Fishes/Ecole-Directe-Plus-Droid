@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 require("dotenv").config();
 
-const Client = new Discord.Client({ partials: ["CHANNEL"], intents: 19992575 });
+const Client = new Discord.Client({ partials: ["CHANNEL"], intents: 53608447 });
 
 // Error handling
 

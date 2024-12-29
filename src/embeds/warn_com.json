@@ -1,9 +1,9 @@
 {
     "title": "⛔ Comportement inapproprié ⛔",
-    "description": "**`⚠️ Avertissement à Tous les Utilisateurs ⚠️`**\n\nNous tenons à vous informer qu'un abus de vocabulaire violent a été détecté dans les échanges récents de **{message.author}**. Ce type de comportement est inacceptable et va à l'encontre de nos règles de conduite. 🚫\n\n**🌟 Rappel Important :** Le respect et la courtoisie sont essentiels dans nos interactions.\n\n**`🔍 Nous vous encourageons à :`**\n\n**• Être attentifs à vos mots.**\n**• Promouvoir un environnement sain et respectueux.**\n**• Signaler tout comportement inapproprié.**\n**• Si vous êtes témoin de tels abus, n'hésitez pas à nous en faire part**\n\nEnsemble, nous pouvons maintenir une communauté positive et accueillante ! 🤗",
+    "description": "**`⚠️ Avertissement à Tous les Utilisateurs ⚠️`**\n\nNous tenons à vous informer qu'un abus de vocabulaire violent a été détecté dans les échanges récents de **{message.globalName}** (alias : **{message.author})**. Ce type de comportement est inacceptable et va à l'encontre de nos règles de conduite. 🚫\n\n**🌟 Rappel Important :** Le respect et la courtoisie sont essentiels dans nos interactions.\n\n**`🔍 Nous vous encourageons à :`**\n\n**• Être attentifs à vos mots.**\n**• Promouvoir un environnement sain et respectueux.**\n**• Signaler tout comportement inapproprié.**\n**• Si vous êtes témoin de tels abus, n'hésitez pas à nous en faire part**\n\nEnsemble, nous pouvons maintenir une communauté positive et accueillante ! 🤗",
     "color": "#b00000",
     "author": {
-      "name": "Ecole Directe Plus Security",
-      "icon_url": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png"
+        "name": "Ecole Directe Plus Security",
+        "icon_url": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png"
     }
 }
