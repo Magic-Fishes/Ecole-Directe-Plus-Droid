@@ -4,7 +4,8 @@
     "description": "The Droid of Ecole Directe Plus website",
     "main": "index.js",
     "scripts": {
-        "format": "npx prettier --write \"**/*.js\"",
+        "linux-format": "npx prettier --write '**/*.js'",
+        "windows-format": "npx prettier --write \"**/*.js\"",
         "dev": "nodemon"
     },
     "author": "As De Pique :) / in collaboration with Ewalwi",

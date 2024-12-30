@@ -10,11 +10,13 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 module.exports = {
     name: Events.MessageCreate,
     async execute(client, message) {
-        if (
-            message.author.id === client.user.id ||
-            (message.content.endsWith(".safemsg") &&
-                op_members.includes(message.author.id))
-        ) {
+        if (message.author.id === client.user.id) return;
+
+        const general_channel = message.guild.channels.cache.find(
+            (channel) => channel.id === "1323300589123407903"
+        ); // reel: "1170357852846686228"
+
+        if (message.content.includes(".safemsg") && op_members.includes(message.author.id)) {
             const op_embed_data = JSON.parse(
                 fs.readFileSync(
                     path.join(__dirname, "../embeds/op_bypass.json"),
@@ -35,6 +37,7 @@ module.exports = {
                 });
 
             try {
+                await general_channel.send({ embeds: [op_embed] });
                 await message.author.send({ embeds: [op_embed] });
             } catch (error) {
                 if (error.code === 50007) {
@@ -43,18 +46,15 @@ module.exports = {
                     );
                 }
             }
-            console.log("Utilisateur OP ignoré");
+            console.log("[AUTOMOD] - Utilisateur OP ignoré");
             return;
         }
         const mod_role = message.guild.roles.cache.find(
             (role) => role.id === "1319230810691207209"
         ); // reel: "1170362568297164820"
         const mod_channel = message.guild.channels.cache.find(
-            (channel) => channel.id === "1318947548563636324"
+            (channel) => channel.name === "mod"
         ); // reel: "1170356329722949652"
-        const general_channel = message.guild.channels.cache.find(
-            (channel) => channel.id === "1318947548563636324"
-        ); // reel: "1170357852846686228"
         const member = message.member;
         const content = message.content.toLowerCase();
 
@@ -66,7 +66,7 @@ module.exports = {
                     {
                         role: "system",
                         content:
-                            "je vais t'envoyer des messages, Vérifie les en fonction des règles suivantes : Aucun contenu sexuellement explicite. Aucun contenu pornographique. Aucun contenu NSFW. Aucun contenu illégal. Pas de modding. Pas de piratage. Aucune publication d'informations personnelles (y compris les vrais noms, adresses, e-mails, mots de passe, informations de compte bancaire et de carte de crédit, etc.). Aucune attaque personnelle. Pas de harcèlement. Pas de sexisme. Pas de racisme. Pas de discours de haine. Pas de langage offensant. Pas de discussions religieuses. Pas de discussions politiques. Pas de discussions sexuelles. Pas de spam. Pas de message excessif (briser une idée dans de nombreux messages au lieu de tout écrire dans un seul article). Pas de murs de texte (que ce soit dans des messages séparés ou comme un seul message). Pas de verrouillage des majuscules. Pas d'emojis abusifs. Pas de réactions abusives. Les modérateurs se réservent le droit de supprimer tout message. Les modérateurs se réservent le droit de modifier n'importe quel message. Pas de publicité sans permission. Aucun lien vers d'autres serveurs. Le bot commande uniquement sous #robots. Réponds par 'block' si le message enfreint ces règles, et par 'pass' s'il les respecte.",
+                            "Je vais t'envoyer des messages. Si l'un de ces messages est insultant, relève du harcèlement, est offensant, impertinent ou trop long, réponds simplement par 'block'. Si le message est approprié et respecte les normes de communication, réponds par 'pass'. Sois souple dans ton évaluation, mais garde à l'esprit ces critères.",
                     },
                     {
                         role: "user",
@@ -105,7 +105,7 @@ module.exports = {
             } catch (error) {
                 if (error.code === 50007) {
                     console.log(
-                        "Impossible d'envoyer un message privé à l'utilisateur."
+                        "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur."
                     );
                 }
             }
@@ -154,7 +154,7 @@ module.exports = {
 
             await general_channel.send({ embeds: [comAlertEmbed] });
 
-            console.log("Opération de modération effectuée.");
+            console.log("[AUTOMOD] - Opération de modération effectuée.");
         }
     },
 };
