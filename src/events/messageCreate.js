@@ -7,6 +7,7 @@ const path = require("path");
 const op_roles = ["1319230810691207209"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+
 const iaDetectionAndModeration = async (client, message) => {
     console.log(
         message.content.endsWith(".safemsg") &&
@@ -54,6 +55,7 @@ const iaDetectionAndModeration = async (client, message) => {
                             "Erreur lors de la suppression du message :",
                             err
                         )
+
                     );
             }, 5000);
 
@@ -67,6 +69,7 @@ const iaDetectionAndModeration = async (client, message) => {
                     "Impossible d'envoyer un message privé à l'utilisateur."
                 );
             }
+
         }
         console.log("Utilisateur OP ignoré");
         return;
@@ -124,17 +127,89 @@ const iaDetectionAndModeration = async (client, message) => {
                     userWarnEmbedContent.author.url ||
                     "https://www.ecole-directe.plus/",
                 iconURL: userWarnEmbedContent.author.icon_url,
+
             });
 
-        try {
-            await member.send({ embeds: [userWarnEmbed] });
-        } catch (error) {
-            console.log(error);
-            if (error.code === 50007) {
-                console.log(
-                    "Impossible d'envoyer un message privé à l'utilisateur."
-                );
+
+        const chatCompletion = await getGroqChatCompletion();
+        ai_detection = chatCompletion.choices[0]?.message?.content;
+
+        if (ai_detection === "block") {
+            const userWarnEmbedContent = JSON.parse(
+                fs.readFileSync(
+                    path.join(__dirname, "../embeds/warnDM.json"),
+                    "utf8"
+                )
+            );
+
+            const userWarnEmbed = new EmbedBuilder()
+                .setTitle(userWarnEmbedContent.title)
+                .setDescription(userWarnEmbedContent.description)
+                .setColor(userWarnEmbedContent.color)
+                .setAuthor({
+                    name: userWarnEmbedContent.author.name,
+                    url:
+                        userWarnEmbedContent.author.url ||
+                        "https://www.ecole-directe.plus/",
+                    iconURL: userWarnEmbedContent.author.icon_url,
+                });
+
+            try {
+                await member.send({ embeds: [userWarnEmbed] });
+            } catch (error) {
+                if (error.code === 50007) {
+                    console.log(
+                        "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur."
+                    );
+                }
             }
+
+            const modWarnEmbedContent = JSON.parse(
+                fs.readFileSync(
+                    path.join(__dirname, "../embeds/warn_mod.json"),
+                    "utf8"
+                )
+            );
+            let description = modWarnEmbedContent.description
+                .replace("{modos.mention}", mod_role.tag)
+                .replace("{message.author}", member.user.username)
+                .replace("{message.author.name}", member.user.globalName)
+                .replace("{message.content}", message.content);
+
+            const modWarnEmbed = new EmbedBuilder()
+                .setTitle(modWarnEmbedContent.title)
+                .setDescription(description)
+                .setColor(modWarnEmbedContent.color);
+
+            await mod_channel.send({ embeds: [modWarnEmbed] });
+
+            const comAlertEmbedContent = JSON.parse(
+                fs.readFileSync(
+                    path.join(__dirname, "../embeds/warn_com.json"),
+                    "utf8"
+                )
+            );
+            // console.log(member);
+            description = comAlertEmbedContent.description
+                .replace("{message.author}", member.user.tag)
+                .replace("{message.globalName}", member.user.globalName);
+
+            const comAlertEmbed = new EmbedBuilder()
+                .setTitle(comAlertEmbedContent.title)
+                .setDescription(description)
+                .setColor(comAlertEmbedContent.color)
+                .setAuthor({
+                    name: comAlertEmbedContent.author.name,
+                    url:
+                        comAlertEmbedContent.author.url ||
+                        "https://www.ecole-directe.plus/",
+                    iconURL: comAlertEmbedContent.author.icon_url,
+                });
+
+            await general_channel.send({ embeds: [comAlertEmbed] });
+
+            console.log("[AUTOMOD] - Opération de modération effectuée.");
+
         }
 
         const modWarnEmbedContent = JSON.parse(
