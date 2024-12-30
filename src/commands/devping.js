@@ -9,7 +9,7 @@ module.exports = {
         const devRole = interaction.guild.roles.cache.find(
             (role) => role.name === "Développeur"
         );
-        const active_dev_role = interaction.guild.roles.cache.find(
+        const activeDevRole = interaction.guild.roles.cache.find(
             (role) => role.id === 1280907843238760451
         );
 
@@ -17,14 +17,14 @@ module.exports = {
         const path = require("path");
         const embedData = JSON.parse(
             fs.readFileSync(
-                path.join(__dirname, "../embeds/dev_ping.json"),
+                path.join(__dirname, "../embeds/devPing.json"),
                 "utf8"
             )
         );
 
         const description = embedData.description
-            .replace("{dev_role}", devRole)
-            .replace("{active_dev_role}", active_dev_role);
+            .replace("{devRole}", devRole)
+            .replace("{activeDevRole}", activeDevRole);
 
         const announcementEmbed = new EmbedBuilder()
             .setTitle(embedData.title)
@@ -33,7 +33,7 @@ module.exports = {
             .setAuthor({
                 name: embedData.author.name,
                 url: embedData.author.url || "https://www.ecole-directe.plus/",
-                iconURL: embedData.author.icon_url,
+                iconURL: embedData.author.iconUrl,
             });
 
         await interaction.reply({ embeds: [announcementEmbed] });

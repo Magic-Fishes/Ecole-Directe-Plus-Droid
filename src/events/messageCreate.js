@@ -4,63 +4,61 @@ const fs = require("fs");
 const Groq = require("groq-sdk");
 const path = require("path");
 
-const op_roles = ["1319230810691207209"]; // >
+const opRoles = ["1319230810691207209"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 
 const iaDetectionAndModeration = async (client, message) => {
     console.log(
         message.content.endsWith(".safemsg") &&
-            op_roles.includes(message.author.id)
+            opRoles.includes(message.author.id)
     );
 
     if (
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
             message.member.roles.cache.some((role) =>
-                op_roles.includes(role.id)
+                opRoles.includes(role.id)
             ))
     ) {
-        const op_embed_data = JSON.parse(
+        const opEmbedData = JSON.parse(
             fs.readFileSync(
-                path.join(__dirname, "../embeds/op_bypass.json"),
+                path.join(__dirname, "../embeds/opBypass.json"),
                 "utf8"
             )
         );
 
-        const op_embed = new EmbedBuilder()
-            .setTitle(op_embed_data.title)
-            .setDescription(op_embed_data.description)
-            .setColor(op_embed_data.color)
+        const opEmbed = new EmbedBuilder()
+            .setTitle(opEmbedData.title)
+            .setDescription(opEmbedData.description)
+            .setColor(opEmbedData.color)
             .setAuthor({
-                name: op_embed_data.author.name,
+                name: opEmbedData.author.name,
                 url:
-                    op_embed_data.author.url ||
+                    opEmbedData.author.url ||
                     "https://www.ecole-directe.plus/",
-                iconURL: op_embed_data.author.icon_url,
+                iconURL: opEmbedData.author.iconUrl,
             });
         console.log("ARRIVED HERE");
         try {
             if (message.author.bot) return;
-            const reply_msg = await message.reply({
-                embeds: [op_embed],
+            const replyMsg = await message.reply({
+                embeds: [opEmbed],
                 ephemeral: true,
             });
 
             setTimeout(() => {
-                reply_msg
+                replyMsg
                     .delete()
                     .catch((err) =>
                         console.error(
                             "Erreur lors de la suppression du message :",
                             err
                         )
-
                     );
             }, 5000);
 
             // await message.lineReply({
-            //     embeds: [op_embed],
+            //     embeds: [opEmbed],
             //     ephemeral: true,
             // });
         } catch (error) {
@@ -69,25 +67,24 @@ const iaDetectionAndModeration = async (client, message) => {
                     "Impossible d'envoyer un message privé à l'utilisateur."
                 );
             }
-
         }
         console.log("Utilisateur OP ignoré");
         return;
     }
-    const mod_role = message.guild.roles.cache.find(
+    const modRole = message.guild.roles.cache.find(
         (role) => role.id === "1319230810691207209"
     ); // reel: "1170362568297164820"
-    const mod_channel = message.guild.channels.cache.find(
+    const modChannel = message.guild.channels.cache.find(
         (channel) => channel.id === "1323219598010744842"
     ); // reel: "1170356329722949652"
-    const general_channel = message.guild.channels.cache.find(
+    const generalChannel = message.guild.channels.cache.find(
         (channel) => channel.id === "1300721888586235905"
     ); // reel: "1170357852846686228"
 
     const member = message.member;
     const content = message.content.toLowerCase(); // message content
 
-    let ai_detection = "pass";
+    let aiDetection = "pass";
 
     async function getGroqChatCompletion() {
         return groq.chat.completions.create({
@@ -107,9 +104,9 @@ const iaDetectionAndModeration = async (client, message) => {
     }
 
     const chatCompletion = await getGroqChatCompletion();
-    ai_detection = chatCompletion.choices[0]?.message?.content;
+    aiDetection = chatCompletion.choices[0]?.message?.content;
 
-    if (ai_detection === "block") {
+    if (aiDetection === "block") {
         const userWarnEmbedContent = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/warnDM.json"),
@@ -126,15 +123,13 @@ const iaDetectionAndModeration = async (client, message) => {
                 url:
                     userWarnEmbedContent.author.url ||
                     "https://www.ecole-directe.plus/",
-                iconURL: userWarnEmbedContent.author.icon_url,
-
+                iconURL: userWarnEmbedContent.author.iconUrl,
             });
 
-
         const chatCompletion = await getGroqChatCompletion();
-        ai_detection = chatCompletion.choices[0]?.message?.content;
+        aiDetection = chatCompletion.choices[0]?.message?.content;
 
-        if (ai_detection === "block") {
+        if (aiDetection === "block") {
             const userWarnEmbedContent = JSON.parse(
                 fs.readFileSync(
                     path.join(__dirname, "../embeds/warnDM.json"),
@@ -151,7 +146,7 @@ const iaDetectionAndModeration = async (client, message) => {
                     url:
                         userWarnEmbedContent.author.url ||
                         "https://www.ecole-directe.plus/",
-                    iconURL: userWarnEmbedContent.author.icon_url,
+                    iconURL: userWarnEmbedContent.author.iconUrl,
                 });
 
             try {
@@ -166,12 +161,12 @@ const iaDetectionAndModeration = async (client, message) => {
 
             const modWarnEmbedContent = JSON.parse(
                 fs.readFileSync(
-                    path.join(__dirname, "../embeds/warn_mod.json"),
+                    path.join(__dirname, "../embeds/warnMod.json"),
                     "utf8"
                 )
             );
             let description = modWarnEmbedContent.description
-                .replace("{modos.mention}", mod_role.tag)
+                .replace("{modos.mention}", modRole.tag)
                 .replace("{message.author}", member.user.username)
                 .replace("{message.author.name}", member.user.globalName)
                 .replace("{message.content}", message.content);
@@ -181,11 +176,11 @@ const iaDetectionAndModeration = async (client, message) => {
                 .setDescription(description)
                 .setColor(modWarnEmbedContent.color);
 
-            await mod_channel.send({ embeds: [modWarnEmbed] });
+            await modChannel.send({ embeds: [modWarnEmbed] });
 
             const comAlertEmbedContent = JSON.parse(
                 fs.readFileSync(
-                    path.join(__dirname, "../embeds/warn_com.json"),
+                    path.join(__dirname, "../embeds/warnCom.json"),
                     "utf8"
                 )
             );
@@ -203,23 +198,22 @@ const iaDetectionAndModeration = async (client, message) => {
                     url:
                         comAlertEmbedContent.author.url ||
                         "https://www.ecole-directe.plus/",
-                    iconURL: comAlertEmbedContent.author.icon_url,
+                    iconURL: comAlertEmbedContent.author.iconUrl,
                 });
 
-            await general_channel.send({ embeds: [comAlertEmbed] });
+            await generalChannel.send({ embeds: [comAlertEmbed] });
 
             console.log("[AUTOMOD] - Opération de modération effectuée.");
-
         }
 
         const modWarnEmbedContent = JSON.parse(
             fs.readFileSync(
-                path.join(__dirname, "../embeds/warn_mod.json"),
+                path.join(__dirname, "../embeds/warnMod.json"),
                 "utf8"
             )
         );
         let description = modWarnEmbedContent.description
-            .replace("{modos.mention}", mod_role.tag)
+            .replace("{modos.mention}", modRole.tag)
             .replace("{message.author}", member.user.username)
             .replace("{message.author.name}", member.user.globalName)
             .replace("{message.content}", message.content);
@@ -229,11 +223,11 @@ const iaDetectionAndModeration = async (client, message) => {
             .setDescription(description)
             .setColor(modWarnEmbedContent.color);
 
-        await mod_channel.send({ embeds: [modWarnEmbed] });
+        await modChannel.send({ embeds: [modWarnEmbed] });
 
         const comAlertEmbedContent = JSON.parse(
             fs.readFileSync(
-                path.join(__dirname, "../embeds/warn_com.json"),
+                path.join(__dirname, "../embeds/warnCom.json"),
                 "utf8"
             )
         );
@@ -251,10 +245,10 @@ const iaDetectionAndModeration = async (client, message) => {
                 url:
                     comAlertEmbedContent.author.url ||
                     "https://www.ecole-directe.plus/",
-                iconURL: comAlertEmbedContent.author.icon_url,
+                iconURL: comAlertEmbedContent.author.iconUrl,
             });
 
-        await general_channel.send({ embeds: [comAlertEmbed] });
+        await generalChannel.send({ embeds: [comAlertEmbed] });
 
         console.log("Opération de modération effectuée.");
     }
@@ -266,3 +260,4 @@ module.exports = {
         iaDetectionAndModeration(client, message);
     },
 };
+

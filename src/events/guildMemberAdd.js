@@ -17,7 +17,7 @@ module.exports = {
         );
 
         const description = embedData.description
-            .replace("{member_count}", guildMember.guild.memberCount)
+            .replace("{memberCount}", guildMember.guild.memberCount)
             .replace("{member}", guildMember.user.globalName);
 
         const welcomingEmbed = new EmbedBuilder()
@@ -27,7 +27,7 @@ module.exports = {
             .setAuthor({
                 name: embedData.author.name,
                 url: embedData.author.url || "https://www.ecole-directe.plus/",
-                iconURL: embedData.author.icon_url,
+                iconURL: embedData.author.iconUrl,
             });
 
         try {
