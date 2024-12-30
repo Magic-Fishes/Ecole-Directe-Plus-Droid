@@ -82,7 +82,7 @@ const eventList = [
 module.exports = async (Client) => {
     const cwd = process.cwd();
     (await glob(`${cwd}/src/events/**/*.js`)).map(async (eventFile) => {
-        const event = require(`${cwd}/${eventFile}`);
+        const event = require(`${eventFile}`);
 
         if (!eventList.includes(event.name) || !event.name) {
             return console.log(
@@ -100,3 +100,4 @@ module.exports = async (Client) => {
         console.log(`[EVT] - Event ready : ${event.name}`);
     });
 };
+

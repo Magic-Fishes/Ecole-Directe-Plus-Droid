@@ -4,7 +4,7 @@ module.exports = async (Client) => {
     const cwd = process.cwd();
     (await glob(`${cwd}/src/selectMenus/**/*.js`)).map(
         async (selectMenuFile) => {
-            const selectMenu = require(`${cwd}/${selectMenuFile}`);
+            const selectMenu = require(`${selectMenuFile}`);
 
             if (!selectMenu.name)
                 return console.log(
@@ -16,3 +16,4 @@ module.exports = async (Client) => {
         }
     );
 };
+

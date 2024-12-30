@@ -34,11 +34,10 @@ const iaDetectionAndModeration = async (client, message) => {
             .setAuthor({
                 name: opEmbedData.author.name,
                 url:
-                    opEmbedData.author.url ||
-                    "https://www.ecole-directe.plus/",
+                    opEmbedData.author.url || "https://www.ecole-directe.plus/",
                 iconURL: opEmbedData.author.iconUrl,
             });
-        console.log("ARRIVED HERE");
+
         try {
             if (message.author.bot) return;
             const replyMsg = await message.reply({
@@ -91,8 +90,7 @@ const iaDetectionAndModeration = async (client, message) => {
             messages: [
                 {
                     role: "system",
-                    content:
-                        ```
+                    content: `
 Ecole Directe Plus (EDP) est une version améliorée d'EcoleDirecte (non-affiliée) offrant une interface améliorée et enrichie de fonctionnalités exclusives. EDP a un serveur discord sur lequel les utilisateurs peuvent discuter.
 
 Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs doctorats. Il te sera fournit les différents messages des utilisateurs. Ta mission est de répondre exactement le mot clé "block" lorsque tu considères le message inapproprié, sinon, répond exactement le mot clé "pass".
@@ -103,7 +101,7 @@ Fais attention à certains points :
 - Tu es sur Discord, une messagerie rapide, reste très laxiste et intervient uniquement lorsque tu considères le message comme grave et pouvant heurter la sensibilité
 - Si une vulgarité n'est pas ciblée, elle ne justifie pas un "block"
 - Vérifie que tu ai bien suivis toutes les directives ci-dessus
-```,
+`,
                 },
                 {
                     role: "user",
