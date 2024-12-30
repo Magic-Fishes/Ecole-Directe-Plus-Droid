@@ -25,7 +25,7 @@ module.exports = {
         );
 
         const description = embedData.description.replace(
-            "{member_count}",
+            "{memberCount}",
             memberCount
         );
 
@@ -36,7 +36,7 @@ module.exports = {
             .setAuthor({
                 name: embedData.author.name,
                 url: embedData.author.url || "https://www.ecole-directe.plus/",
-                iconURL: embedData.author.icon_url,
+                iconURL: embedData.author.iconUrl,
             });
 
         await interaction.reply({ embeds: [welcomingEmbed] });
