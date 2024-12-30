@@ -7,7 +7,6 @@
         "linux-format": "npx prettier --write '**/*.js'",
         "windows-format": "npx prettier --write \"**/*.js\"",
         "syntax-format": "node ./scripts/renameVariables.js",
-        "toggle-slash": "node ./scripts/changeSlash.js",
         "dev": "nodemon"
     },
     "author": "As De Pique :) / in collaboration with Ewalwi (:",
