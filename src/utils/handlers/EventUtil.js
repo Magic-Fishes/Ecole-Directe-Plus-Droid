@@ -1,6 +1,5 @@
-const { promisify } = require("util");
 const { glob } = require("glob");
-const pGlob = promisify(glob);
+const ctx = new (require("../../global/context"))();
 
 const eventList = [
     "apiRequest",
@@ -82,7 +81,9 @@ const eventList = [
 module.exports = async (Client) => {
     const cwd = process.cwd();
     (await glob(`${cwd}/src/events/**/*.js`)).map(async (eventFile) => {
-        const event = require(`${eventFile}`);
+        const event = require(
+            ctx.get("IS_WINDOWS") ? `${cwd}/${eventFile}` : `${eventFile}`
+        );
 
         if (!eventList.includes(event.name) || !event.name) {
             return console.log(

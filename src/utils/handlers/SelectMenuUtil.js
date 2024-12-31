@@ -1,10 +1,15 @@
 const { glob } = require("glob");
+const ctx = new (require("../../global/context"))();
 
 module.exports = async (Client) => {
     const cwd = process.cwd();
     (await glob(`${cwd}/src/selectMenus/**/*.js`)).map(
         async (selectMenuFile) => {
-            const selectMenu = require(`${selectMenuFile}`);
+            const selectMenu = require(
+                ctx.get("IS_WINDOWS")
+                    ? `${cwd}/${selectMenuFile}`
+                    : `${selectMenuFile}`
+            );
 
             if (!selectMenu.name)
                 return console.log(

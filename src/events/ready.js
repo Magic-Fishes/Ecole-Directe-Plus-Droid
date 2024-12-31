@@ -1,5 +1,4 @@
-const Context = require("../global/data");
-const ctx = new Context();
+const ctx = new (require("../global/context"))();
 
 const fs = require("fs");
 
@@ -40,6 +39,9 @@ module.exports = {
             guild.commands.set(Client.commands.map((cmd) => cmd))
         );
 
-        console.log("Bot ON");
+        console.log(
+            "Beep boop! I'm alive and ready to take over the world... or just do my job."
+        );
     },
 };
+
