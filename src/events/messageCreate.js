@@ -55,7 +55,7 @@ const iaDetectionAndModeration = async (client, message) => {
                             err
                         )
                     );
-            }, 10000);
+            }, 5000);
 
             // await message.lineReply({
             //     embeds: [opEmbed],
