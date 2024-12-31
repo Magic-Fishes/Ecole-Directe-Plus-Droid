@@ -50,7 +50,7 @@ const iaDetectionAndModeration = async (client, message) => {
                     .delete()
                     .catch((err) =>
                         console.error(
-                            "Erreur lors de la suppression du message :",
+                            "[IAMOD] - Erreur lors de la suppression du message :",
                             err
                         )
                     );
@@ -63,11 +63,11 @@ const iaDetectionAndModeration = async (client, message) => {
         } catch (error) {
             if (error.code === 50007) {
                 console.log(
-                    "Impossible d'envoyer un message privé à l'utilisateur."
+                    "[AIMOD] - Impossible d'envoyer un message privé à l'utilisateur."
                 );
             }
         }
-        console.log("Utilisateur OP ignoré");
+        console.log("[IAMOD] - Utilisateur OP ignoré");
         return;
     }
     const modRole = message.guild.roles.cache.find(
@@ -81,7 +81,7 @@ const iaDetectionAndModeration = async (client, message) => {
     ); // reel: "1170357852846686228"
 
     const member = message.member;
-    const content = message.content.toLowerCase(); // message content
+    const content = message.content.toLowerCase();
 
     let aiDetection = "pass";
 
@@ -100,7 +100,7 @@ Fais attention à certains points :
 - Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
 - Tu es sur Discord, une messagerie rapide, reste très laxiste et intervient uniquement lorsque tu considères le message comme grave et pouvant heurter la sensibilité
 - Si une vulgarité n'est pas ciblée, elle ne justifie pas un "block"
-- Vérifie que tu ai bien suivis toutes les directives ci-dessus
+- Vérifie que tu aies bien suivi toutes les directives ci-dessus
 `,
                 },
                 {
@@ -167,7 +167,6 @@ Fais attention à certains points :
                     );
                 }
             }
-
             const modWarnEmbedContent = JSON.parse(
                 fs.readFileSync(
                     path.join(__dirname, "../embeds/warnMod.json"),
@@ -193,7 +192,6 @@ Fais attention à certains points :
                     "utf8"
                 )
             );
-            // console.log(member);
             description = comAlertEmbedContent.description
                 .replace("{message.author}", member.user.tag)
                 .replace("{message.globalName}", member.user.globalName);
@@ -213,53 +211,8 @@ Fais attention à certains points :
             await generalChannel.send({ embeds: [comAlertEmbed] });
 
             console.log("[AUTOMOD] - Opération de modération effectuée.");
+            return;
         }
-
-        const modWarnEmbedContent = JSON.parse(
-            fs.readFileSync(
-                path.join(__dirname, "../embeds/warnMod.json"),
-                "utf8"
-            )
-        );
-        let description = modWarnEmbedContent.description
-            .replace("{modos.mention}", modRole.tag)
-            .replace("{message.author}", member.user.username)
-            .replace("{message.author.name}", member.user.globalName)
-            .replace("{message.content}", message.content);
-
-        const modWarnEmbed = new EmbedBuilder()
-            .setTitle(modWarnEmbedContent.title)
-            .setDescription(description)
-            .setColor(modWarnEmbedContent.color);
-
-        await modChannel.send({ embeds: [modWarnEmbed] });
-
-        const comAlertEmbedContent = JSON.parse(
-            fs.readFileSync(
-                path.join(__dirname, "../embeds/warnCom.json"),
-                "utf8"
-            )
-        );
-        // console.log(member);
-        description = comAlertEmbedContent.description
-            .replace("{message.author}", member.user.tag)
-            .replace("{message.globalName}", member.user.globalName);
-
-        const comAlertEmbed = new EmbedBuilder()
-            .setTitle(comAlertEmbedContent.title)
-            .setDescription(description)
-            .setColor(comAlertEmbedContent.color)
-            .setAuthor({
-                name: comAlertEmbedContent.author.name,
-                url:
-                    comAlertEmbedContent.author.url ||
-                    "https://www.ecole-directe.plus/",
-                iconURL: comAlertEmbedContent.author.iconUrl,
-            });
-
-        await generalChannel.send({ embeds: [comAlertEmbed] });
-
-        console.log("Opération de modération effectuée.");
     }
 };
 
