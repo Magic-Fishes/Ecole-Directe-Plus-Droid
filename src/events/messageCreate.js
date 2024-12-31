@@ -55,7 +55,7 @@ const iaDetectionAndModeration = async (client, message) => {
                             err
                         )
                     );
-            }, 5000);
+            }, 10000);
 
             // await message.lineReply({
             //     embeds: [opEmbed],
@@ -75,10 +75,10 @@ const iaDetectionAndModeration = async (client, message) => {
         (role) => role.id === "1319230810691207209"
     ); // reel: "1170362568297164820"
     const modChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1323300718094061691"
+        (channel) => channel.id === "1323584755371081780"
     ); // reel: "1170356329722949652"
     const generalChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1323300589123407903"
+        (channel) => channel.id === "1323584794142969907"
     ); // reel: "1170357852846686228"
 
     const member = message.member;
@@ -99,8 +99,8 @@ Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs do
 Fais attention à certains points :
 - Tu dois juger les messages qui te sont fournis, surtout pas y répondre
 - Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
-- Tu es sur Discord, une messagerie rapide, reste très laxiste et intervient uniquement lorsque tu considères le message comme grave et pouvant heurter la sensibilité
-- Si une vulgarité n'est pas ciblée, elle ne justifie pas un "block"
+- Tu es sur Discord, une messagerie rapide, reste laxiste et intervient uniquement lorsque tu considères le message comme plutôt grave et pouvant heurter la sensibilité
+- Si une vulgarité ne prends personne comme cible, elle ne justifie pas un "block"
 - Vérifie que tu aies bien suivi toutes les directives ci-dessus
 `,
                 },
