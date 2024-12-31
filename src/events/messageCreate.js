@@ -9,11 +9,6 @@ const opRoles = ["1323355831378640970"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const iaDetectionAndModeration = async (client, message) => {
-    console.log(
-        message.content.endsWith(".safemsg") &&
-            opRoles.includes(message.author.id)
-    );
-
     if (
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
