@@ -4,7 +4,8 @@ const fs = require("fs");
 const Groq = require("groq-sdk");
 const path = require("path");
 
-const opRoles = ["1319230810691207209"]; // >
+const opRoles = ["1323355831378640970"]; // >
+// real 1170362568297164820 (Moderateur)
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const iaDetectionAndModeration = async (client, message) => {
@@ -74,10 +75,10 @@ const iaDetectionAndModeration = async (client, message) => {
         (role) => role.id === "1319230810691207209"
     ); // reel: "1170362568297164820"
     const modChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1323219598010744842"
+        (channel) => channel.id === "1323300718094061691"
     ); // reel: "1170356329722949652"
     const generalChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1300721888586235905"
+        (channel) => channel.id === "1323300589123407903"
     ); // reel: "1170357852846686228"
 
     const member = message.member;
@@ -122,18 +123,6 @@ Fais attention à certains points :
                 "utf8"
             )
         );
-
-        const userWarnEmbed = new EmbedBuilder()
-            .setTitle(userWarnEmbedContent.title)
-            .setDescription(userWarnEmbedContent.description)
-            .setColor(userWarnEmbedContent.color)
-            .setAuthor({
-                name: userWarnEmbedContent.author.name,
-                url:
-                    userWarnEmbedContent.author.url ||
-                    "https://www.ecole-directe.plus/",
-                iconURL: userWarnEmbedContent.author.iconUrl,
-            });
 
         const chatCompletion = await getGroqChatCompletion();
         aiDetection = chatCompletion.choices[0]?.message?.content;
