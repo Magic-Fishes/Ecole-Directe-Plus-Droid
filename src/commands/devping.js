@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const permissions = require("../utils/permissions");
 
 module.exports = {
     name: "dev-ping",
@@ -6,6 +7,10 @@ module.exports = {
         "ping chaque dev sur dev général pour annoncer une recertification",
     options: [],
     runSlash: async (_, interaction) => {
+        if (!permissions.isAllowed(interaction)) {
+            return interaction.reply({ content: "Vous n'avez pas la permission d'exécuter cette commande.", ephemeral: true });
+        }
+        
         const devRole = interaction.guild.roles.cache.find(
             (role) => role.name === "Développeur"
         );

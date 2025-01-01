@@ -3,7 +3,6 @@ const fs = require("fs");
 
 const Groq = require("groq-sdk");
 const path = require("path");
-const ctx = new (require("../global/context"))();
 
 const opRoles = ["1323355831378640970"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });

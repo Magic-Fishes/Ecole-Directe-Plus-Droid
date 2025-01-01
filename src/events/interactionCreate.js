@@ -13,7 +13,6 @@ module.exports = {
             // console.log(Client.buttons);
             // console.log(Client.selects);
             if (!button) return interaction.reply("Ce bouton n'existe pas");
-
             button.runInteraction(Client, interaction);
         } else if (interaction.isSelectMenu()) {
             // console.log(Client.buttons);
