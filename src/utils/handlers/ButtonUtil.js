@@ -8,12 +8,17 @@ module.exports = async (Client) => {
             ctx.get("IS_WINDOWS") ? `${cwd}/${buttonFile}` : `${buttonFile}`
         );
 
-        if (!button.name)
-            return console.log(
-                `[BTN] - Couldn't load button : No name - File : ${buttonFile}`
+        if (!button.name) {
+            console.log(
+                `[BTN] - Couldn't load button: No name - File: ${buttonFile}`
             );
+            return;
+        }
+
         Client.buttons.set(button.name, button);
-        console.log(`[BTN] - Bouton ready : ${button.name}`);
+        const buttonsList = ctx.get("BUTTONS_LIST");
+        buttonsList.push(button.name);
+        ctx.set("BUTTONS_LIST", buttonsList);
     });
 };
 

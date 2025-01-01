@@ -3,6 +3,7 @@ const ctx = new (require("../../global/context"))();
 
 module.exports = async (Client) => {
     const cwd = process.cwd();
+
     (await glob(`${cwd}/src/commands/**/*.js`)).map(async (commandFile) => {
         const command = require(
             ctx.get("IS_WINDOWS") ? `${cwd}/${commandFile}` : `${commandFile}`
@@ -14,7 +15,9 @@ module.exports = async (Client) => {
             );
 
         Client.commands.set(command.name, command);
-        console.log(`[CMD] - Command ready : ${command.name}`);
+        const commandsList = ctx.get("COMMANDS_LIST");
+        commandsList.push(command.name);
+        ctx.set("COMMANDS_LIST", commandsList);
     });
 };
 

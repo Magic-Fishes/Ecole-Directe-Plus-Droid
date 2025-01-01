@@ -24,21 +24,6 @@ const sortJSON = async (parsedJSON) => {
     const referringSites = await parsedJSON.referring_sites;
     // const statusCodes = await parsedJSON.status_codes;
 
-    const datas = [
-        general,
-        visitors,
-        requests,
-        notFound,
-        os,
-        browsers,
-        referringSites,
-    ];
-
-    // if (parsedJSON === undefined) {
-    //     console.log("UNDEFINDED");
-    //     return;
-    // }
-
     const handleGeneral = () => {
         return {
             general: {

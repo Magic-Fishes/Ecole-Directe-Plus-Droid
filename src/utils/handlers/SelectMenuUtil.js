@@ -17,7 +17,9 @@ module.exports = async (Client) => {
                 );
 
             Client.selects.set(selectMenu.name, selectMenu);
-            console.log(`[SLC] - Select menu ready : ${selectMenu.name}`);
+            const selectMenus = ctx.get("SELECT_MENUS_LIST");
+            selectMenus.push(selectMenu.name);
+            ctx.set("SELECT_MENUS_LIST", selectMenus);
         }
     );
 };

@@ -6,6 +6,12 @@ const os = require("os");
 const Client = new Discord.Client({ partials: ["CHANNEL"], intents: 53608447 });
 
 const progInit = () => {
+    ctx.set("BUTTONS_LIST", []);
+    ctx.set("COMMANDS_LIST", []);
+    ctx.set("EVENTS_LIST", []);
+    ctx.set("SELECT_MENUS_LIST", []);
+    ctx.set("AUTHORIZATIONS_LIST", []);
+
     const botVersion = "1.0.0";
     const authorizedArch = ["x64", "arm64", "ppc64", "s390x"];
     const osExecutionDetails = {

@@ -80,6 +80,7 @@ const eventList = [
 
 module.exports = async (Client) => {
     const cwd = process.cwd();
+
     (await glob(`${cwd}/src/events/**/*.js`)).map(async (eventFile) => {
         const event = require(
             ctx.get("IS_WINDOWS") ? `${cwd}/${eventFile}` : `${eventFile}`
@@ -98,7 +99,9 @@ module.exports = async (Client) => {
         } else {
             Client.on(event.name, (...args) => event.execute(Client, ...args));
         }
-        console.log(`[EVT] - Event ready : ${event.name}`);
+        const eventsList = ctx.get("EVENTS_LIST");
+        eventsList.push(event.name);
+        ctx.set("EVENTS_LIST", eventsList);
     });
 };
 
