@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-// PLZ don't understand lol
+
 const toCamelCase = (str) =>
     str.replace(/_+([a-z])/g, (_, letter) => letter.toUpperCase());
 
@@ -12,9 +12,22 @@ const isLiteralPath = (content, match) => {
     );
 };
 
+const excludeList = ["src/events/messageUpdate.js", "src/utils/webServer.js"];
+
+const shouldExclude = (filePath) => {
+    return excludeList.some((excludeItem) =>
+        filePath.includes(path.join(...excludeItem.split("/")))
+    );
+};
+
 const renameVariables = (dir) => {
     fs.readdirSync(dir).forEach((file) => {
         const filePath = path.join(dir, file);
+
+        if (shouldExclude(filePath)) {
+            console.log(`Excluded: ${filePath}`);
+            return;
+        }
 
         if (fs.statSync(filePath).isDirectory()) {
             renameVariables(filePath);
