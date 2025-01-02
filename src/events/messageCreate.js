@@ -146,7 +146,7 @@ Tu dois absolument respecter tous ces points sans exception :
             return i.customId === 'warnCommunity' || i.customId === 'reportUser';
         };
 
-        const collector = modMessage.createMessageComponentCollector({ filter, time: 15000 });
+        const collector = modMessage.createMessageComponentCollector({ filter, time: 3600000 });
 
         collector.on('collect', async i => {
             await i.deferUpdate();
