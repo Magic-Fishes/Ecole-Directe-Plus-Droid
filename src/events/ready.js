@@ -1,3 +1,5 @@
+const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
+
 const ctx = new (require("../global/context"))();
 require("dotenv").config();
 
@@ -54,6 +56,7 @@ module.exports = {
         });
         console.log("LOADED COMPONENTS:");
         console.table(tableData);
+        setDroidStatus(Client);
         console.log(
             "Beep boop! I'm alive and ready to take over the world... or just do my job."
         );

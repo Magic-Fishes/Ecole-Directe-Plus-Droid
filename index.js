@@ -42,6 +42,7 @@ const progInit = () => {
             ctx.set("IS_WINDOWS", true);
             break;
     }
+    console.log("[LAD] - Bot status set to default value 'Sleepping 🌛'.");
 };
 
 const loadComponents = () => {
