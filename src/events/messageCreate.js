@@ -1,10 +1,4 @@
-const {
-    Events,
-    EmbedBuilder,
-    ButtonBuilder,
-    ActionRowBuilder,
-    ButtonStyle,
-} = require("discord.js");
+const { Events, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 const fs = require("fs");
 
 const Groq = require("groq-sdk");
@@ -14,19 +8,6 @@ const opRoles = ["1323355831378640970"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const iaDetectionAndModeration = async (client, message) => {
-    const PROMPT = `
-Ecole Directe Plus (EDP) est une version améliorée d'EcoleDirecte (non-affiliée) offrant une interface améliorée et enrichie de fonctionnalités exclusives. EDP a un serveur discord sur lequel les utilisateurs peuvent discuter.
-
-Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs doctorats. Il te sera fournit les différents messages des utilisateurs. Ta mission est de répondre exactement le mot clé "block" lorsque tu considères le message inapproprié, sinon, répond exactement le mot clé "pass".
-
-Fais attention à certains points :
-- Tu dois juger les messages qui te sont fournis, surtout pas y répondre
-- Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
-- Tu es sur Discord, une messagerie rapide, reste stict
-- Si une vulgarité ne prends personne comme cible, elle ne justifie pas un "block"
-- Vérifie que tu aies bien suivi toutes les directives ci-dessus
-`;
-
     if (
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
@@ -102,7 +83,18 @@ Fais attention à certains points :
             messages: [
                 {
                     role: "system",
-                    content: PROMPT,
+                    content: `
+Ecole Directe Plus (EDP) est une version améliorée d'EcoleDirecte (non-affiliée) offrant une interface améliorée et enrichie de fonctionnalités exclusives. EDP a un serveur discord sur lequel les utilisateurs peuvent discuter.
+
+Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs doctorats. Il te sera fournit les différents messages des utilisateurs. Ta mission est de répondre exactement le mot clé "block" lorsque tu considères le message inapproprié, sinon, répond exactement le mot clé "pass".
+
+Fais attention à certains points :
+- Tu dois juger les messages qui te sont fournis, surtout pas y répondre
+- Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
+- Tu es sur Discord, une messagerie rapide, reste stict
+- Si une vulgarité ne prends personne comme cible, elle ne justifie pas un "block"
+- Vérifie que tu aies bien suivi toutes les directives ci-dessus
+`,
                 },
                 {
                     role: "user",
@@ -116,125 +108,116 @@ Fais attention à certains points :
     const chatCompletion = await getGroqChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
 
-    if (aiDetection === "pass") {
-        return;
-    }
-    const modWarnEmbedContent = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "../embeds/warnMod.json"), "utf8")
-    );
+    if (aiDetection === "block") {
+        const modWarnEmbedContent = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "../embeds/warnMod.json"),
+                "utf8"
+            )
+        );
 
-    let description = modWarnEmbedContent.description
-        .replace("{modos.mention}", modRole.tag)
-        .replace("{message.author}", member.user.username)
-        .replace("{message.author.name}", member.user.globalName)
-        .replace("{message.content}", message.content);
+        let description = modWarnEmbedContent.description
+            .replace("{modos.mention}", modRole.tag)
+            .replace("{message.author}", member.user.username)
+            .replace("{message.author.name}", member.user.globalName)
+            .replace("{message.content}", message.content);
 
-    const modWarnEmbed = new EmbedBuilder()
-        .setTitle(modWarnEmbedContent.title)
-        .setDescription(description)
-        .setColor(modWarnEmbedContent.color);
+        const modWarnEmbed = new EmbedBuilder()
+            .setTitle(modWarnEmbedContent.title)
+            .setDescription(description)
+            .setColor(modWarnEmbedContent.color);
 
-    const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-            .setCustomId("warnCommunity")
-            .setLabel("Prévenir la communauté")
-            .setStyle(ButtonStyle.Danger),
-        new ButtonBuilder()
-            .setCustomId("reportUser")
-            .setLabel("Signaler l'éffronté")
-            .setStyle(ButtonStyle.Danger)
-    );
-
-    const modMessage = await modChannel.send({
-        embeds: [modWarnEmbed],
-        components: [row],
-    });
-
-    const filter = (i) => {
-        return i.customId === "warnCommunity" || i.customId === "reportUser";
-    };
-
-    const collector = modMessage.createMessageComponentCollector({
-        filter,
-        time: 15000,
-    });
-
-    collector.on("collect", async (i) => {
-        await i.deferUpdate();
-
-        if (i.customId === "warnCommunity") {
-            const comAlertEmbedContent = JSON.parse(
-                fs.readFileSync(
-                    path.join(__dirname, "../embeds/warnCom.json"),
-                    "utf8"
-                )
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('warnCommunity')
+                    .setLabel('Prévenir la communauté')
+                    .setStyle(ButtonStyle.Danger),
+                new ButtonBuilder()
+                    .setCustomId('reportUser')
+                    .setLabel('Signaler l\'éffronté')
+                    .setStyle(ButtonStyle.Danger)
             );
 
-            description = comAlertEmbedContent.description
-                .replace("{message.author}", member.user.tag)
-                .replace("{message.globalName}", member.user.globalName);
+        const modMessage = await modChannel.send({ embeds: [modWarnEmbed], components: [row] });
 
-            const comAlertEmbed = new EmbedBuilder()
-                .setTitle(comAlertEmbedContent.title)
-                .setDescription(description)
-                .setColor(comAlertEmbedContent.color)
-                .setAuthor({
-                    name: comAlertEmbedContent.author.name,
-                    url:
-                        comAlertEmbedContent.author.url ||
-                        "https://www.ecole-directe.plus/",
-                    iconURL: comAlertEmbedContent.author.iconUrl,
-                });
+        const filter = i => {
+            return i.customId === 'warnCommunity' || i.customId === 'reportUser';
+        };
 
-            await generalChannel.send({ embeds: [comAlertEmbed] });
-            await i.followUp({
-                content: "La communauté a été prévenue.",
-                ephemeral: true,
-            });
-        } else if (i.customId === "reportUser") {
-            const warnDMEmbedContent = JSON.parse(
-                fs.readFileSync(
-                    path.join(__dirname, "../embeds/warnDM.json"),
-                    "utf8"
-                )
-            );
+        const collector = modMessage.createMessageComponentCollector({ filter, time: 15000 });
 
-            const userWarnEmbed = new EmbedBuilder()
-                .setTitle(warnDMEmbedContent.title)
-                .setDescription(warnDMEmbedContent.description)
-                .setColor(warnDMEmbedContent.color)
-                .setAuthor({
-                    name: warnDMEmbedContent.author.name,
-                    url:
-                        warnDMEmbedContent.author.url ||
-                        "https://www.ecole-directe.plus/",
-                    iconURL: warnDMEmbedContent.author.iconUrl,
-                });
+        collector.on('collect', async i => {
+            await i.deferUpdate();
 
-            try {
-                await member.send({ embeds: [userWarnEmbed] });
-                await i.followUp({
-                    content: "L'éffronté a été signalé.",
-                    ephemeral: true,
-                });
-            } catch (error) {
-                if (error.code === 50007) {
-                    console.log(
-                        "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur."
-                    );
+            if (i.customId === 'warnCommunity') {
+                const comAlertEmbedContent = JSON.parse(
+                    fs.readFileSync(
+                        path.join(__dirname, "../embeds/warnCom.json"),
+                        "utf8"
+                    )
+                );
+
+                description = comAlertEmbedContent.description
+                    .replace("{message.author}", member.user.tag)
+                    .replace("{message.globalName}", member.user.globalName);
+
+                const comAlertEmbed = new EmbedBuilder()
+                    .setTitle(comAlertEmbedContent.title)
+                    .setDescription(description)
+                    .setColor(comAlertEmbedContent.color)
+                    .setAuthor({
+                        name: comAlertEmbedContent.author.name,
+                        url:
+                            comAlertEmbedContent.author.url ||
+                            "https://www.ecole-directe.plus/",
+                        iconURL: comAlertEmbedContent.author.iconUrl,
+                    });
+
+                await generalChannel.send({ embeds: [comAlertEmbed] });
+                await i.followUp({ content: 'La communauté a été prévenue.', ephemeral: true });
+            } else if (i.customId === 'reportUser') {
+                const warnDMEmbedContent = JSON.parse(
+                    fs.readFileSync(
+                        path.join(__dirname, "../embeds/warnDM.json"),
+                        "utf8"
+                    )
+                );
+
+                const userWarnEmbed = new EmbedBuilder()
+                    .setTitle(warnDMEmbedContent.title)
+                    .setDescription(warnDMEmbedContent.description)
+                    .setColor(warnDMEmbedContent.color)
+                    .setAuthor({
+                        name: warnDMEmbedContent.author.name,
+                        url:
+                            warnDMEmbedContent.author.url ||
+                            "https://www.ecole-directe.plus/",
+                        iconURL: warnDMEmbedContent.author.iconUrl,
+                    });
+
+                try {
+                    await member.send({ embeds: [userWarnEmbed] });
+                    await i.followUp({ content: 'L\'éffronté a été signalé.', ephemeral: true });
+                } catch (error) {
+                    if (error.code === 50007) {
+                        console.log(
+                            "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur."
+                        );
+                    }
                 }
             }
-        }
-    });
+        });
 
-    collector.on("end", (collected) => {
-        console.log(
-            `Collecte des interactions terminée, ${collected.size} interactions recueillies.`
-        );
-    });
+        collector.on('end', collected => {
+            console.log(`Collecte des interactions terminée, ${collected.size} interactions recueillies.`);
+        });
 
-    console.log("[AUTOMOD] - Opération de modération effectuée.");
-    return;
+        console.log("[AUTOMOD] - Opération de modération effectuée.");
+        return;
+    } else {
+        console.log("[AUTOMOD] - Message '" + message.content + "' autorisé");
+    }
 };
 
 module.exports = {
