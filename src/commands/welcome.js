@@ -1,7 +1,6 @@
 const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
-const permissions = require("../utils/permissions");
 
 module.exports = {
     name: "welcome",
@@ -14,10 +13,9 @@ module.exports = {
             required: false,
         },
     ],
+    restricted: true,
+
     runSlash: async (_, interaction) => {
-        if (!permissions.isAllowed(interaction)) {
-            return interaction.reply({ content: "Vous n'avez pas la permission d'exécuter cette commande.", ephemeral: true });
-        }
         const member = interaction.member;
         const memberCount = member.guild.memberCount;
 
@@ -46,3 +44,4 @@ module.exports = {
         await interaction.reply({ embeds: [welcomingEmbed] });
     },
 };
+

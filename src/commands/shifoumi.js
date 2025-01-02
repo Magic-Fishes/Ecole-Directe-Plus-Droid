@@ -5,6 +5,8 @@ module.exports = {
     name: "selects",
     description: "Selects !",
     options: [],
+    restricted: true,
+
     runSlash: (_, interaction) => {
         interaction.reply({
             content: `wanna play ?`,
@@ -37,3 +39,4 @@ module.exports = {
         });
     },
 };
+

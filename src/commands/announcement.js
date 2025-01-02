@@ -1,5 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const permissions = require("../utils/permissions");
+const {
+    EmbedBuilder,
+    ApplicationCommandOptionType,
+    MessageFlags,
+} = require("discord.js");
 
 module.exports = {
     name: "announcement",
@@ -7,46 +10,44 @@ module.exports = {
     options: [
         {
             name: "titre",
-            description: "titre de l'annonce",
-            type: 3,
+            description: "Titre de l'annonce",
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: "description",
-            description: "description de l'annonce",
-            type: 3,
+            description: "Description de l'annonce",
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
-            name: "auteur",
+            name: "anonyme",
             description: "Faut-il vous annoncer ?",
-            type: 5,
+            type: ApplicationCommandOptionType.Boolean,
             required: true,
         },
         {
             name: "couleur",
-            description: "couleur de l'embed (défaut bleu)",
-            type: 3,
+            description: "Couleur de l'embed (défaut bleu)",
+            type: ApplicationCommandOptionType.String,
             required: false,
-        }
+        },
     ],
+    restricted: true,
 
     runSlash: async (client, interaction) => {
-        if (!permissions.isAllowed(interaction)) {
-            return interaction.reply({ content: "Vous n'avez pas la permission d'exécuter cette commande.", ephemeral: true });
-        }
-        
         let user = {
             username: null,
             displayAvatarURL: null,
         };
 
-        if (interaction.options.getBoolean("auteur")) {
+        if (!interaction.options.getBoolean("anonyme")) {
             user.username = interaction.user.username;
             user.displayAvatarURL = interaction.user.displayAvatarURL();
         } else {
             user.username = "Ecole Directe Plus";
-            user.displayAvatarURL = "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png";
+            user.displayAvatarURL =
+                "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png";
         }
 
         const announcementEmbedContent = {
@@ -55,8 +56,8 @@ module.exports = {
             color: interaction.options.getString("couleur") || "#0000FF",
             author: {
                 name: user.username,
-                iconUrl: user. displayAvatarURL,
-            }
+                iconUrl: user.displayAvatarURL,
+            },
         };
 
         const announcementEmbed = new EmbedBuilder()
@@ -68,8 +69,14 @@ module.exports = {
                 iconURL: announcementEmbedContent.author.iconUrl,
             });
 
-        console.log(`[ANNOUNCEMENT] - Annonce de ${user.username} : "${announcementEmbedContent.title}", envoyée avec succès.`);
+        console.log(
+            `[ANNOUNCEMENT] - Annonce de ${user.username} : "${announcementEmbedContent.title}", envoyée avec succès.`
+        );
         await interaction.channel.send({ embeds: [announcementEmbed] });
-        await interaction.reply({ content: "Annonce envoyée avec succès.", ephemeral: true });
+        await interaction.reply({
+            content: "Annonce envoyée avec succès.",
+            flags: MessageFlags.Ephemeral,
+        });
     },
 };
+

@@ -4,6 +4,7 @@ const {
     ButtonBuilder,
     ActionRowBuilder,
     ButtonStyle,
+    MessageFlags,
 } = require("discord.js");
 const fs = require("fs");
 
@@ -11,7 +12,7 @@ const Groq = require("groq-sdk");
 const path = require("path");
 const ctx = new (require("../global/context"))();
 
-const id = require('../global/config');
+const id = require("../global/config");
 const config = require("../global/config");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -46,7 +47,7 @@ const iaDetectionAndModeration = async (client, message) => {
             if (message.author.bot) return;
             const replyMsg = await message.reply({
                 embeds: [opEmbed],
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
 
             console.log("[AUTOMOD] - Utilisateur OP ignoré");
@@ -114,7 +115,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                 },
             ],
             model: "llama-3.3-70b-versatile",
-            temperature: 0,
+            temperature: 0, // wtf
             /* eslint-disable camelcase */
             max_tokens: 1024,
             top_p: 0,
@@ -173,7 +174,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             if (i.customId === "warnCommunity") {
                 await i.followUp({
                     content: "La communauté a été prévenue.",
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                 });
 
                 if (!modMessage.editable) {
@@ -202,7 +203,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                 try {
                     await i.followUp({
                         content: "L'utilisateur a été signalé.",
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
 
                     const newComponents = modMessage.components
