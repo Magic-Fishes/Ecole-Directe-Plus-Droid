@@ -1,4 +1,10 @@
-const { Events, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const {
+    Events,
+    EmbedBuilder,
+    ButtonBuilder,
+    ActionRowBuilder,
+    ButtonStyle,
+} = require("discord.js");
 const fs = require("fs");
 
 const Groq = require("groq-sdk");
@@ -128,30 +134,37 @@ Tu dois absolument respecter tous ces points sans exception :
             .setDescription(description)
             .setColor(modWarnEmbedContent.color);
 
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('warnCommunity')
-                    .setLabel('Prévenir la communauté')
-                    .setStyle(ButtonStyle.Danger),
-                new ButtonBuilder()
-                    .setCustomId('reportUser')
-                    .setLabel('Signaler l\'éffronté')
-                    .setStyle(ButtonStyle.Danger)
+        const row = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId("warnCommunity")
+                .setLabel("Prévenir la communauté")
+                .setStyle(ButtonStyle.Danger),
+            new ButtonBuilder()
+                .setCustomId("reportUser")
+                .setLabel("Signaler l'éffronté")
+                .setStyle(ButtonStyle.Danger)
+        );
+
+        const modMessage = await modChannel.send({
+            embeds: [modWarnEmbed],
+            components: [row],
+        });
+
+        const filter = (i) => {
+            return (
+                i.customId === "warnCommunity" || i.customId === "reportUser"
             );
-
-        const modMessage = await modChannel.send({ embeds: [modWarnEmbed], components: [row] });
-
-        const filter = i => {
-            return i.customId === 'warnCommunity' || i.customId === 'reportUser';
         };
 
-        const collector = modMessage.createMessageComponentCollector({ filter, time: 3600000 });
+        const collector = modMessage.createMessageComponentCollector({
+            filter,
+            time: 3600000,
+        });
 
-        collector.on('collect', async i => {
+        collector.on("collect", async (i) => {
             await i.deferUpdate();
 
-            if (i.customId === 'warnCommunity') {
+            if (i.customId === "warnCommunity") {
                 const comAlertEmbedContent = JSON.parse(
                     fs.readFileSync(
                         path.join(__dirname, "../embeds/warnCom.json"),
@@ -176,8 +189,11 @@ Tu dois absolument respecter tous ces points sans exception :
                     });
 
                 await generalChannel.send({ embeds: [comAlertEmbed] });
-                await i.followUp({ content: 'La communauté a été prévenue.', ephemeral: true });
-            } else if (i.customId === 'reportUser') {
+                await i.followUp({
+                    content: "La communauté a été prévenue.",
+                    ephemeral: true,
+                });
+            } else if (i.customId === "reportUser") {
                 const warnDMEmbedContent = JSON.parse(
                     fs.readFileSync(
                         path.join(__dirname, "../embeds/warnDM.json"),
@@ -199,7 +215,10 @@ Tu dois absolument respecter tous ces points sans exception :
 
                 try {
                     await member.send({ embeds: [userWarnEmbed] });
-                    await i.followUp({ content: 'L\'éffronté a été signalé.', ephemeral: true });
+                    await i.followUp({
+                        content: "L'éffronté a été signalé.",
+                        ephemeral: true,
+                    });
                 } catch (error) {
                     if (error.code === 50007) {
                         console.log(
@@ -210,8 +229,10 @@ Tu dois absolument respecter tous ces points sans exception :
             }
         });
 
-        collector.on('end', collected => {
-            console.log(`Collecte des interactions terminée, ${collected.size} interactions recueillies.`);
+        collector.on("end", (collected) => {
+            console.log(
+                `Collecte des interactions terminée, ${collected.size} interactions recueillies.`
+            );
         });
 
         console.log("[AUTOMOD] - Opération de modération effectuée.");
@@ -225,3 +246,4 @@ module.exports = {
         iaDetectionAndModeration(client, message);
     },
 };
+

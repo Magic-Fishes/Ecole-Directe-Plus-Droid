@@ -123,9 +123,9 @@ const statisticsMessage = async (
                 name: "**Liens les plus visités :**",
                 value: `
                 ${
-                    response.topVisitedRoutes === undefined
+                    response.top_visited_routes === undefined
                         ? null
-                        : response.topVisitedRoutes
+                        : response.top_visited_routes
                               .map((route) => {
                                   return `- ${route}`;
                               })
@@ -147,7 +147,15 @@ const statisticsMessage = async (
     };
 
     // console.dir(JSON.stringify(response), { depth: null });
-    oldMessage.edit({ embeds: [embed] });
+
+    try {
+        await oldMessage.edit({ embeds: [embed] });
+    } catch (error) {
+        if (error.message === "Unknown Message") {
+            return;
+        }
+    }
+
     setDroidStatus(
         client,
         `Visites aujourd'hui : ${
@@ -166,7 +174,7 @@ module.exports = {
             client,
             oldMessage,
             newMessage,
-            "1324061176325341204"
+            "1323214051815460977"
         );
     },
 };
