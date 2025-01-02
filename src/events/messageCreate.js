@@ -151,14 +151,8 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             components: [row],
         });
 
-        const filter = (i) => {
-            return (
-                i.customId === "warnCommunity" || i.customId === "reportUser"
-            );
-
-        const modMessage = await modChannel.send({ embeds: [modWarnEmbed], components: [row] });
-
-        const filter = i => i.customId === 'warnCommunity' || i.customId === 'reportUser';
+        const filter = (i) =>
+            i.customId === "warnCommunity" || i.customId === "reportUser";
 
         const collector = modMessage.createMessageComponentCollector({
             filter,
