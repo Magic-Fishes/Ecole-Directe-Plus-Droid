@@ -9,6 +9,7 @@ const fs = require("fs");
 
 const Groq = require("groq-sdk");
 const path = require("path");
+const ctx = new (require("../global/context"))();
 
 const opRoles = ["1323355831378640970"]; // >
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -78,8 +79,9 @@ const iaDetectionAndModeration = async (client, message) => {
     const generalChannel = message.guild.channels.cache.find(
         (channel) => channel.id === "1323584794142969907"
     );
-
     const member = message.member;
+    ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :)
+    ctx.set("MESSAGE_CREATE_MEMBER", member);
     const content = message.content.toLowerCase();
 
     let aiDetection = "pass";
@@ -128,11 +130,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                 "utf8"
             )
         );
-
         let description = modWarnEmbedContent.description
-            .replace("{modos.mention}", modRole.tag)
-            .replace("{message.author}", member.user.username)
-            .replace("{message.author.name}", member.user.globalName)
+            .replace("{modos.mention}", `${modRole}`)
+            .replace("{message.author}", member.user.globalName)
+            .replace("{message.author.name}", member.user.username)
             .replace("{message.content}", message.content);
 
         const modWarnEmbed = new EmbedBuilder()
@@ -168,59 +169,57 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             await i.deferUpdate();
 
             if (i.customId === "warnCommunity") {
-                const comAlertEmbedContent = JSON.parse(
-                    fs.readFileSync(
-                        path.join(__dirname, "../embeds/warnCom.json"),
-                        "utf8"
-                    )
-                );
-
-                description = comAlertEmbedContent.description
-                    .replace("{message.author}", member.user.tag)
-                    .replace("{message.globalName}", member.user.globalName);
-
-                const comAlertEmbed = new EmbedBuilder()
-                    .setTitle(comAlertEmbedContent.title)
-                    .setDescription(description)
-                    .setColor(comAlertEmbedContent.color)
-                    .setAuthor({
-                        name: comAlertEmbedContent.author.name,
-                        url:
-                            comAlertEmbedContent.author.url ||
-                            "https://www.ecole-directe.plus/",
-                        iconURL: comAlertEmbedContent.author.iconUrl,
-                    });
-
-                await generalChannel.send({ embeds: [comAlertEmbed] });
                 await i.followUp({
                     content: "La communauté a été prévenue.",
                     ephemeral: true,
                 });
+
+                if (!modMessage.editable) {
+                    return;
+                }
+
+                const newComponents = modMessage.components
+                    .map((row) => {
+                        const filteredComponents = row.components.filter(
+                            (component) =>
+                                component.customId !== "warnCommunity"
+                        );
+
+                        return filteredComponents.length > 0
+                            ? new ActionRowBuilder().addComponents(
+                                  filteredComponents
+                              )
+                            : null;
+                    })
+                    .filter(Boolean);
+
+                await modMessage.edit({
+                    components: newComponents,
+                });
             } else if (i.customId === "reportUser") {
-                const warnDMEmbedContent = JSON.parse(
-                    fs.readFileSync(
-                        path.join(__dirname, "../embeds/warnDM.json"),
-                        "utf8"
-                    )
-                );
-
-                const userWarnEmbed = new EmbedBuilder()
-                    .setTitle(warnDMEmbedContent.title)
-                    .setDescription(warnDMEmbedContent.description)
-                    .setColor(warnDMEmbedContent.color)
-                    .setAuthor({
-                        name: warnDMEmbedContent.author.name,
-                        url:
-                            warnDMEmbedContent.author.url ||
-                            "https://www.ecole-directe.plus/",
-                        iconURL: warnDMEmbedContent.author.iconUrl,
-                    });
-
                 try {
-                    await member.send({ embeds: [userWarnEmbed] });
                     await i.followUp({
                         content: "L'éffronté a été signalé.",
                         ephemeral: true,
+                    });
+
+                    const newComponents = modMessage.components
+                        .map((row) => {
+                            const filteredComponents = row.components.filter(
+                                (component) =>
+                                    component.customId !== "reportUser"
+                            );
+
+                            return filteredComponents.length > 0
+                                ? new ActionRowBuilder().addComponents(
+                                      filteredComponents
+                                  )
+                                : null;
+                        })
+                        .filter(Boolean);
+
+                    await modMessage.edit({
+                        components: newComponents,
                     });
                 } catch (error) {
                     if (error.code === 50007) {
