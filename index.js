@@ -13,7 +13,7 @@ const progInit = () => {
     ctx.set("AUTHORIZATIONS_LIST", []);
 
     const botVersion = "1.0.0";
-    const authorizedArch = ["x64", "arm64", "ppc64", "s390x"];
+    const authorizedArch = ["x64", "arm64", "ppc64", "s390x", "win32"];
     const osExecutionDetails = {
         platform: os.platform(),
         arch: os.arch(),
@@ -40,8 +40,6 @@ const progInit = () => {
         case "win32":
             console.log("[LAD] - Active system is Windows, registering.");
             ctx.set("IS_WINDOWS", true);
-        default:
-            console.log("[ERR] - Unrecognized system");
     }
 };
 
