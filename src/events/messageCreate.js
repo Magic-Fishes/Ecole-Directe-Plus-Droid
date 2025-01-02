@@ -88,11 +88,12 @@ Ecole Directe Plus (EDP) est une version améliorée d'EcoleDirecte (non-affili�
 
 Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs doctorats. Il te sera fournit les différents messages des utilisateurs. Ta mission est de répondre exactement le mot clé "block" lorsque tu considères le message inapproprié, sinon, répond exactement le mot clé "pass".
 
-Fais attention à certains points :
+Tu dois absolument respecter tous ces points sans exception :
 - Tu dois juger les messages qui te sont fournis, surtout pas y répondre
 - Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
-- Tu es sur Discord, une messagerie rapide, reste stict
-- Si une vulgarité ne prends personne comme cible, elle ne justifie pas un "block"
+- Tu es sur Discord, une messagerie rapide, reste laxiste et ne signale que les insultes ciblées ou les messages inappropriés... Exemple: 'Je suis con' ou 'con' ne sera pas signalé car il n'est dirigé vars personne d'autre que l'envoyeur, alors que 'vous êtes cons' est offensant et doit être signalé;
+- Si une vulgarité ne prends personne comme cible, elle ne justifie pas un "block" sauf si elle dérange le serveur ou est trop insistante
+- Tout message contenant de la publicité, des promotions ou des incitations à des formations et services, comme "Unlock the world of cryptocurrency..." sera considéré comme du spam et devra être signalé.
 - Vérifie que tu aies bien suivi toutes les directives ci-dessus
 `,
                 },
@@ -215,8 +216,6 @@ Fais attention à certains points :
 
         console.log("[AUTOMOD] - Opération de modération effectuée.");
         return;
-    } else {
-        console.log("[AUTOMOD] - Message '" + message.content + "' autorisé");
     }
 };
 

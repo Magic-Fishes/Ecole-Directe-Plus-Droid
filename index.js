@@ -74,4 +74,3 @@ console.log(`BOT Running in ${process.env.NODE_ENV}`);
 progInit();
 loadComponents();
 Client.login(process.env.TOKEN);
-
