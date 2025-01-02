@@ -3,10 +3,10 @@ require("dotenv").config();
 
 const getAuthorizations = async (client) => {
     const guild = client.guilds.cache.find(
-        (s) => s.name === process.env.MAIN_SERVER_NAME
+        (s) => s.id === process.env.MAIN_SERVER_ID
     );
     if (!guild) {
-        console.log(`The bot is not in ${process.env.MAIN_SERVER_NAME}.`);
+        console.log(`The bot is not in ${process.env.MAIN_SERVER_ID}.`);
         process.abort();
     }
 

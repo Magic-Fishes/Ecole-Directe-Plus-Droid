@@ -40,6 +40,10 @@ const progInit = () => {
         case "win32":
             console.log("[LAD] - Active system is Windows, registering.");
             ctx.set("IS_WINDOWS", true);
+            break;
+        default:
+            console.log("[ERR] - Unrecognized system");
+            process.abort();
     }
 };
 
@@ -69,8 +73,8 @@ process.on("warning", (...args) => {
 
 // Client.on("error", console.error);
 // Client.on("warn", console.warn);
-console.log(`BOT Running in ${process.env.NODE_ENV}`);
 
 progInit();
 loadComponents();
 Client.login(process.env.TOKEN);
+

@@ -1,4 +1,10 @@
-const { Events, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const {
+    Events,
+    EmbedBuilder,
+    ButtonBuilder,
+    ActionRowBuilder,
+    ButtonStyle,
+} = require("discord.js");
 const fs = require("fs");
 
 const Groq = require("groq-sdk");
@@ -132,28 +138,34 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             .setDescription(description)
             .setColor(modWarnEmbedContent.color);
 
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('warnCommunity')
-                    .setLabel('Prévenir la communauté')
-                    .setStyle(ButtonStyle.Danger),
-                new ButtonBuilder()
-                    .setCustomId('reportUser')
-                    .setLabel('Signaler l\'éffronté')
-                    .setStyle(ButtonStyle.Danger)
-            );
+        const row = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId("warnCommunity")
+                .setLabel("Prévenir la communauté")
+                .setStyle(ButtonStyle.Danger),
+            new ButtonBuilder()
+                .setCustomId("reportUser")
+                .setLabel("Signaler l'éffronté")
+                .setStyle(ButtonStyle.Danger)
+        );
 
-        const modMessage = await modChannel.send({ embeds: [modWarnEmbed], components: [row] });
+        const modMessage = await modChannel.send({
+            embeds: [modWarnEmbed],
+            components: [row],
+        });
 
-        const filter = i => i.customId === 'warnCommunity' || i.customId === 'reportUser';
+        const filter = (i) =>
+            i.customId === "warnCommunity" || i.customId === "reportUser";
 
-        const collector = modMessage.createMessageComponentCollector({ filter, time: 3600000 });
+        const collector = modMessage.createMessageComponentCollector({
+            filter,
+            time: 3600000,
+        });
 
-        collector.on('collect', async i => {
+        collector.on("collect", async (i) => {
             await i.deferUpdate();
 
-            if (i.customId === 'warnCommunity') {
+            if (i.customId === "warnCommunity") {
                 const comAlertEmbedContent = JSON.parse(
                     fs.readFileSync(
                         path.join(__dirname, "../embeds/warnCom.json"),
@@ -178,8 +190,11 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                     });
 
                 await generalChannel.send({ embeds: [comAlertEmbed] });
-                await i.followUp({ content: 'La communauté a été prévenue.', ephemeral: true });
-            } else if (i.customId === 'reportUser') {
+                await i.followUp({
+                    content: "La communauté a été prévenue.",
+                    ephemeral: true,
+                });
+            } else if (i.customId === "reportUser") {
                 const warnDMEmbedContent = JSON.parse(
                     fs.readFileSync(
                         path.join(__dirname, "../embeds/warnDM.json"),
@@ -201,7 +216,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
 
                 try {
                     await member.send({ embeds: [userWarnEmbed] });
-                    await i.followUp({ content: 'L\'éffronté a été signalé.', ephemeral: true });
+                    await i.followUp({
+                        content: "L'éffronté a été signalé.",
+                        ephemeral: true,
+                    });
                 } catch (error) {
                     if (error.code === 50007) {
                         console.log(
@@ -223,3 +241,4 @@ module.exports = {
         iaDetectionAndModeration(client, message);
     },
 };
+
