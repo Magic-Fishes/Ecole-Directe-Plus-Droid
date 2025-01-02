@@ -103,7 +103,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                     content: content,
                 },
             ],
-            model: "llama3-8b-8192",
+            model: "llama-3.3-70b-versatile",
+            temperature: 0,
+            max_tokens: 1024,
+            top_p: 0,
         });
     }
 
