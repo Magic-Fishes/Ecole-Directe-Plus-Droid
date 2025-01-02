@@ -111,8 +111,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             ],
             model: "llama-3.3-70b-versatile",
             temperature: 0,
+            /* eslint-disable camelcase */
             max_tokens: 1024,
             top_p: 0,
+            /* eslint-enable camelcase */
         });
     }
 
