@@ -11,7 +11,9 @@ const Groq = require("groq-sdk");
 const path = require("path");
 const ctx = new (require("../global/context"))();
 
-const opRoles = ["1323355831378640970"]; // >
+const id = require('../global/config');
+const config = require("../global/config");
+
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const iaDetectionAndModeration = async (client, message) => {
@@ -19,7 +21,7 @@ const iaDetectionAndModeration = async (client, message) => {
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
             message.member.roles.cache.some((role) =>
-                opRoles.includes(role.id)
+                id.op_role.includes(role.id)
             ))
     ) {
         const opEmbedData = JSON.parse(
@@ -71,13 +73,13 @@ const iaDetectionAndModeration = async (client, message) => {
     }
 
     const modRole = message.guild.roles.cache.find(
-        (role) => role.id === "1319230810691207209"
+        (role) => role.id === config.mod_role
     );
     const modChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1323584755371081780"
+        (channel) => channel.id === config.mod_channel
     );
     const generalChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === "1323584794142969907"
+        (channel) => channel.id === config.general_channel
     );
     const member = message.member;
     ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :)
@@ -148,7 +150,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                 .setStyle(ButtonStyle.Danger),
             new ButtonBuilder()
                 .setCustomId("reportUser")
-                .setLabel("Signaler l'éffronté")
+                .setLabel("Signaler l'utilisateur")
                 .setStyle(ButtonStyle.Danger)
         );
 
@@ -199,7 +201,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             } else if (i.customId === "reportUser") {
                 try {
                     await i.followUp({
-                        content: "L'éffronté a été signalé.",
+                        content: "L'utilisateur a été signalé.",
                         ephemeral: true,
                     });
 

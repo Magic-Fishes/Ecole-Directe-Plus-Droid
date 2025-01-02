@@ -41,9 +41,6 @@ const progInit = () => {
             console.log("[LAD] - Active system is Windows, registering.");
             ctx.set("IS_WINDOWS", true);
             break;
-        default:
-            console.log("[ERR] - Unrecognized system");
-            process.abort();
     }
 };
 

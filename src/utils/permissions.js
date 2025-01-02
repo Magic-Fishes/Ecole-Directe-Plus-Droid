@@ -1,10 +1,10 @@
+const config = require('../global/config');
+
 module.exports = {
     isAllowed: function (interaction) {
-        const modRoles = ["1323355831378640970y"]; // >
-        const botDevs = ["744177952346079253", "899703183520182322"];
 
-        const hasModRole = interaction.member.roles.cache.some(role => modRoles.includes(role.id));
-        const isBotDev = botDevs.includes(interaction.member.id);
+        const hasModRole = interaction.member.roles.cache.some(role => config.mod_role.includes(role.id));
+        const isBotDev = config.bot_devs.includes(interaction.member.id);
 
         if (!hasModRole && !isBotDev) {
             console.log("[PERMISSIONS] - Utilisateur non autorisé à exécuter la commande.");
