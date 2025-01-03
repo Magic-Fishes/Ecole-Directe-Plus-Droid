@@ -1,6 +1,6 @@
 {
     "title": "⛔ Comportement inapproprié ⛔",
-    "description": "Nous avons détecté un abus de vocabulaire violent dans un de tes précédents messages. Ce type de langage est **inacceptable** et va à l'encontre de nos règles de conduite.\n\n• **🛑 Rappel :** Le respect et la courtoisie sont essentiels dans nos échanges.\n\nSi ce comportement persiste, des mesures disciplinaires pourraient être prises, y compris la suspension de ton accès à la plateforme. 🔒\n\nNous te conseillons vivement de réfléchir à tes mots et de faire preuve de respect envers les autres utilisateurs. 🤝\n\nMerci de ta compréhension ! 🙏",
+    "description": "Nous avons détecté un abus de vocabulaire violent dans un de tes précédents messages **=> {message.link}**. Ce type de langage est **inacceptable** et va à l'encontre de nos règles de conduite.\n\n• **🛑 Rappel :** Le respect et la courtoisie sont essentiels dans nos échanges.\n\nSi ce comportement persiste, des mesures disciplinaires pourraient être prises, y compris la suspension de ton accès à la plateforme. 🔒\n\nNous te conseillons vivement de réfléchir à tes mots et de faire preuve de respect envers les autres utilisateurs. 🤝\n\nMerci de ta compréhension ! 🙏",
     "color": "#b00000",
     "author": {
       "name": "Ecole Directe Plus Security",

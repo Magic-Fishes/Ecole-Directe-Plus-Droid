@@ -163,6 +163,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
         });
 
         modMessage["badMessageUserId"] = message.author.id;
+        modMessage["badMessageLinkID"] = `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
 
         /*
         

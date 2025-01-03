@@ -18,16 +18,19 @@ module.exports = {
             )
         );
 
+        const description = warnDMEmbedContent.description
+            .replace("{message.link}", interaction.message.badMessageLinkID);
+
         const userWarnEmbed = new EmbedBuilder()
             .setTitle(warnDMEmbedContent.title)
-            .setDescription(warnDMEmbedContent.description)
+            .setDescription(description)
             .setColor(warnDMEmbedContent.color)
             .setAuthor({
                 name: warnDMEmbedContent.author.name,
                 url:
                     warnDMEmbedContent.author.url ||
                     "https://www.ecole-directe.plus/",
-                iconURL: warnDMEmbedContent.author.iconUrl,
+                iconUrl: warnDMEmbedContent.author.icon_url,
             });
 
         await member.send({ embeds: [userWarnEmbed] });
