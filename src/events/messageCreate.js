@@ -192,20 +192,23 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             time: 3600000,
         });
 
-        collector.on("collect", async (i) => {
-            await i.deferUpdate();
-            await modMessage.edit({
-                content: "",
-            });
-            if (i.customId === "warnCommunity") {
-                await i.followUp({
+        collector.on("collect", async (collectorInteraction) => {
+            await collectorInteraction.deferUpdate();
+
+            const userMention = `<@${collectorInteraction.user.id}>`;
+            let actionMessage;
+
+            if (collectorInteraction.customId === "warnCommunity") {
+                const previousContent =
+                    modMessage.content === `<@&${jsonConfig.mod_role}>`
+                        ? ""
+                        : modMessage.content;
+                actionMessage = `|| ${userMention} a prévenu la communauté". ||`;
+
+                await collectorInteraction.followUp({
                     content: "La communauté a été prévenue.",
                     flags: MessageFlags.Ephemeral,
                 });
-
-                if (!modMessage.editable) {
-                    return;
-                }
 
                 const newComponents = modMessage.components
                     .map((row) => {
@@ -221,14 +224,22 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                             : null;
                     })
                     .filter(Boolean);
-
+                const updatedContent =
+                    `${previousContent}\n${actionMessage}`.trim();
                 await modMessage.edit({
                     components: newComponents,
-                    content: "",
+                    content: updatedContent,
                 });
-            } else if (i.customId === "reportUser") {
+            } else if (collectorInteraction.customId === "reportUser") {
+                const previousContent =
+                    modMessage.content === `<@&${jsonConfig.mod_role}>`
+                        ? ""
+                        : modMessage.content;
+
+                actionMessage = `|| ${userMention} a signalé l'utilisateur". ||`;
+
                 try {
-                    await i.followUp({
+                    await collectorInteraction.followUp({
                         content: "L'utilisateur a été signalé.",
                         flags: MessageFlags.Ephemeral,
                     });
@@ -247,9 +258,11 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                                 : null;
                         })
                         .filter(Boolean);
-
+                    const updatedContent =
+                        `${previousContent}\n${actionMessage}`.trim();
                     await modMessage.edit({
                         components: newComponents,
+                        content: updatedContent,
                     });
                 } catch (error) {
                     if (error.code === 50007) {
