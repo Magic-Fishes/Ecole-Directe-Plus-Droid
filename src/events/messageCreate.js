@@ -135,7 +135,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
         let description = modWarnEmbedContent.description
             .replace("{message.author}", member.user.globalName)
             .replace("{message.author.name}", member.user.username)
-            .replace("{message.content}", message.content);
+            .replace("{message.content}", message.content)
+            .replace("{serverId}", message.guildId)
+            .replace("{channelId}", message.channelId)
+            .replace("{messageId}", message.id);
 
         const modWarnEmbed = new EmbedBuilder()
             .setTitle(modWarnEmbedContent.title)
@@ -159,6 +162,28 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             content: `${modRole}`,
         });
 
+        modMessage["badMessageUserId"] = message.author.id;
+
+        /*
+        
+        Ok, j'explique le bordel qui est ici (1ligne mdr) en fr prcq c'est compliqué.
+        Nous avons rencontré un problème, sur le pannel de modération (les 2 boutons)
+        lorsqu'on signalait un utilisateur EN MP, c'était le dernier membre a avoir
+        envoyé un message qui était report (et donc pas le farfadet en question).
+        Ce qui est légèrement problématique (juste une modération qui ping un peu tout
+        le monde mdr). Donc j'ai cherché très longtemps (5min je crois) une solution
+        et la voilà... une ligne :)
+        En fait l'idée est d'injecter l'id du farfadet dans l'objet de l'embed du message
+        (oui là ça se corse...) et ainsi pouvoir récupérer dans le code du bouton, soit
+        dans l'interraction. Donc dans la case message de l'interraction, on y retrouve
+        l'id du farfadet et donc, pour chaque message (tant que le bot n'est pas déchargé)
+        l'id de la personne qui semble chiante est stocké directement dans le message qui
+        est récupérable dans l'interraction du bouton dans lequel il est chargé.
+        Voilà, ce message est bcp trop long mais j'espère que c'est clair. Allez faire
+        un tour du coté du code du bouton.
+
+         */
+
         const filter = (i) =>
             i.customId === "warnCommunity" || i.customId === "reportUser";
 
@@ -167,20 +192,23 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             time: 3600000,
         });
 
-        collector.on("collect", async (i) => {
-            await i.deferUpdate();
-            await modMessage.edit({
-                content: "",
-            });
-            if (i.customId === "warnCommunity") {
-                await i.followUp({
+        collector.on("collect", async (collectorInteraction) => {
+            await collectorInteraction.deferUpdate();
+
+            const userMention = `<@${collectorInteraction.user.id}>`;
+            let actionMessage;
+
+            if (collectorInteraction.customId === "warnCommunity") {
+                const previousContent =
+                    modMessage.content === `<@&${jsonConfig.mod_role}>`
+                        ? ""
+                        : modMessage.content;
+                actionMessage = `|| ${userMention} a prévenu la communauté". ||`;
+
+                await collectorInteraction.followUp({
                     content: "La communauté a été prévenue.",
                     flags: MessageFlags.Ephemeral,
                 });
-
-                if (!modMessage.editable) {
-                    return;
-                }
 
                 const newComponents = modMessage.components
                     .map((row) => {
@@ -196,14 +224,22 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                             : null;
                     })
                     .filter(Boolean);
-
+                const updatedContent =
+                    `${previousContent}\n${actionMessage}`.trim();
                 await modMessage.edit({
                     components: newComponents,
-                    content: "",
+                    content: updatedContent,
                 });
-            } else if (i.customId === "reportUser") {
+            } else if (collectorInteraction.customId === "reportUser") {
+                const previousContent =
+                    modMessage.content === `<@&${jsonConfig.mod_role}>`
+                        ? ""
+                        : modMessage.content;
+
+                actionMessage = `|| ${userMention} a signalé l'utilisateur". ||`;
+
                 try {
-                    await i.followUp({
+                    await collectorInteraction.followUp({
                         content: "L'utilisateur a été signalé.",
                         flags: MessageFlags.Ephemeral,
                     });
@@ -222,9 +258,11 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
                                 : null;
                         })
                         .filter(Boolean);
-
+                    const updatedContent =
+                        `${previousContent}\n${actionMessage}`.trim();
                     await modMessage.edit({
                         components: newComponents,
+                        content: updatedContent,
                     });
                 } catch (error) {
                     if (error.code === 50007) {

@@ -16,6 +16,7 @@ const getAuthorizations = async (client) => {
 
     const botPermissions = botMember.permissions.toArray().sort();
 
+    ctx.set("GUILD", guild); // like this, we can use guild and send messages to any user or other things
     ctx.set("AUTHORIZATIONS_LIST", botPermissions);
 };
 
