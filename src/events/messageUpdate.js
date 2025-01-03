@@ -1,6 +1,7 @@
 const { handleWebSocket } = require("../utils/webServer");
 const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
 const { ActivityType, Events } = require("discord.js");
+const jsonConfig = require("../../config.json");
 
 const statisticsMessage = async (
     client,
@@ -174,7 +175,7 @@ module.exports = {
             client,
             oldMessage,
             newMessage,
-            "1323214051815460977"
+            jsonConfig.stats_channel
         );
     },
 };
