@@ -135,7 +135,10 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
         let description = modWarnEmbedContent.description
             .replace("{message.author}", member.user.globalName)
             .replace("{message.author.name}", member.user.username)
-            .replace("{message.content}", message.content);
+            .replace("{message.content}", message.content)
+            .replace("{serverId}", message.guildId)
+            .replace("{channelId}", message.channelId)
+            .replace("{messageId}", message.id);
 
         const modWarnEmbed = new EmbedBuilder()
             .setTitle(modWarnEmbedContent.title)

@@ -1,6 +1,6 @@
 {
     "title": "🚨 Signalement de Comportement Inapproprié 🚨",
-    "description": "Un comportement inapproprié a été détecté de la part de **{message.author}**.\nVeuillez envisager de prendre des mesures, y compris un mute si nécessaire. Le message a d'ores et déjà été signalé.\n**Auteur** : {message.author.name}\n**Contenu** : ||{message.content}||",
+    "description": "Un comportement inapproprié a été détecté de la part de **{message.author}**.\nVeuillez envisager de prendre des mesures, y compris un mute si nécessaire. Le message a d'ores et déjà été signalé.\n**Auteur** : {message.author.name}\n**Contenu** : ||{message.content}||\n**Lien du message: https://discord.com/channels/{serverId}/{channelId}/{messageId}**",
     "color": "#b00000"
 }
 
