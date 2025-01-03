@@ -159,6 +159,28 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             content: `${modRole}`,
         });
 
+        modMessage["badMessageUserId"] = message.author.id;
+
+        /*
+        
+        Ok, j'explique le bordel qui est ici (1ligne mdr) en fr prcq c'est compliqué.
+        Nous avons rencontré un problème, sur le pannel de modération (les 2 boutons)
+        lorsqu'on signalait un utilisateur EN MP, c'était le dernier membre a avoir
+        envoyé un message qui était report (et donc pas le farfadet en question).
+        Ce qui est légèrement problématique (juste une modération qui ping un peu tout
+        le monde mdr). Donc j'ai cherché très longtemps (5min je crois) une solution
+        et la voilà... une ligne :)
+        En fait l'idée est d'injecter l'id du farfadet dans l'objet de l'embed du message
+        (oui là ça se corse...) et ainsi pouvoir récupérer dans le code du bouton, soit
+        dans l'interraction. Donc dans la case message de l'interraction, on y retrouve
+        l'id du farfadet et donc, pour chaque message (tant que le bot n'est pas déchargé)
+        l'id de la personne qui semble chiante est stocké directement dans le message qui
+        est récupérable dans l'interraction du bouton dans lequel il est chargé.
+        Voilà, ce message est bcp trop long mais j'espère que c'est clair. Allez faire
+        un tour du coté du code du bouton.
+
+         */
+
         const filter = (i) =>
             i.customId === "warnCommunity" || i.customId === "reportUser";
 
