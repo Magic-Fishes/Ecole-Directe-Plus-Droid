@@ -19,17 +19,16 @@ module.exports = {
         const member = interaction.member;
         const memberCount = member.guild.memberCount;
 
-        const embedData = JSON.parse(
+        let embedData = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/welcome.json"),
                 "utf8"
             )
         );
 
-        const description = embedData.description.replace(
-            "{memberCount}",
-            memberCount
-        );
+        let description = embedData.description
+            .replace("{memberCount}", memberCount)
+            .replace("{member}", member.user.globalName);
 
         const welcomingEmbed = new EmbedBuilder()
             .setTitle(embedData.title)
@@ -38,10 +37,32 @@ module.exports = {
             .setAuthor({
                 name: embedData.author.name,
                 url: embedData.author.url || "https://www.ecole-directe.plus/",
-                iconURL: embedData.author.iconUrl,
+                iconURL: embedData.author.icon_url,
             });
 
-        await interaction.reply({ embeds: [welcomingEmbed] });
+        embedData = JSON.parse(
+            fs.readFileSync(
+                path.join(__dirname, "../embeds/comWelcomeAlert.json"),
+                "utf8"
+            )
+        );
+
+        description = embedData.description
+            .replace("{member.name}", member.user.globalName)
+            .replace("{guild.member.count}", memberCount);
+
+        const comWelcomingEmbed = new EmbedBuilder()
+            .setTitle(embedData.title)
+            .setDescription(description)
+            .setColor(embedData.color)
+            .setAuthor({
+                name: embedData.author.name,
+                url: embedData.author.url || "https://www.ecole-directe.plus/",
+                iconURL: embedData.author.icon_url,
+            })
+            .setImage(member.user.displayAvatarURL());
+
+        await interaction.reply({ embeds: [welcomingEmbed, comWelcomingEmbed] });
     },
 };
 
