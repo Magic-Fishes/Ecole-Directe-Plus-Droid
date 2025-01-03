@@ -16,7 +16,7 @@ const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const iaDetectionAndModeration = async (client, message) => {
+const iaDetectionAndModeration = async (_, message) => {
     if (
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
@@ -82,7 +82,7 @@ const iaDetectionAndModeration = async (client, message) => {
         (channel) => channel.id === jsonConfig.general_channel
     );
     const member = message.member;
-    ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :)
+    ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :) -> in french "flm"
     ctx.set("MESSAGE_CREATE_MEMBER", member);
     const content = message.content.toLowerCase();
 
