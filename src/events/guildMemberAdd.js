@@ -6,7 +6,7 @@ module.exports = {
     name: Events.GuildMemberAdd,
     async execute(client, guildMember) {
         const channel = guildMember.guild.channels.cache.get(
-            "1323040960501776496"
+            "1323207153535680594"
         ); // real: 1130436200591794231
 
         const embedData = JSON.parse(
@@ -32,14 +32,25 @@ module.exports = {
 
         try {
             if (channel && channel.isTextBased()) {
-                await channel.send({ embeds: [welcomingEmbed] });
+                const sentMessage = await channel.send({
+                    embeds: [welcomingEmbed],
+                    content: `|| <@${guildMember.user.id}> ||`,
+                });
+
+                setTimeout(async () => {
+                    await sentMessage.edit({
+                        embeds: [welcomingEmbed],
+                        content: "",
+                    });
+                }, 1000);
             } else {
                 console.error("Channel not found or not a text channel.");
             }
         } catch (error) {
             console.error(
-                `Action denided : couldn't send a private message to ${client.user.tag}`
+                `Action denied: couldn't send a message to ${client.user.tag}`
             );
         }
     },
 };
+

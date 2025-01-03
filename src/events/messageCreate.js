@@ -12,8 +12,7 @@ const Groq = require("groq-sdk");
 const path = require("path");
 const ctx = new (require("../global/context"))();
 
-const id = require("../global/config");
-const config = require("../global/config");
+const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -22,7 +21,7 @@ const iaDetectionAndModeration = async (client, message) => {
         message.author.bot ||
         (message.content.endsWith(".safemsg") &&
             message.member.roles.cache.some((role) =>
-                id.op_role.includes(role.id)
+                jsonConfig.op_role.includes(role.id)
             ))
     ) {
         const opEmbedData = JSON.parse(
@@ -74,13 +73,13 @@ const iaDetectionAndModeration = async (client, message) => {
     }
 
     const modRole = message.guild.roles.cache.find(
-        (role) => role.id === config.mod_role
+        (role) => role.id === jsonConfig.mod_role
     );
     const modChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === config.mod_channel
+        (channel) => channel.id === jsonConfig.mod_channel
     );
     const generalChannel = message.guild.channels.cache.find(
-        (channel) => channel.id === config.general_channel
+        (channel) => channel.id === jsonConfig.general_channel
     );
     const member = message.member;
     ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :)
@@ -134,7 +133,6 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
             )
         );
         let description = modWarnEmbedContent.description
-            .replace("{modos.mention}", `${modRole}`)
             .replace("{message.author}", member.user.globalName)
             .replace("{message.author.name}", member.user.username)
             .replace("{message.content}", message.content);
@@ -158,6 +156,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
         const modMessage = await modChannel.send({
             embeds: [modWarnEmbed],
             components: [row],
+            content: `${modRole}`,
         });
 
         const filter = (i) =>
@@ -170,7 +169,9 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
 
         collector.on("collect", async (i) => {
             await i.deferUpdate();
-
+            await modMessage.edit({
+                content: "",
+            });
             if (i.customId === "warnCommunity") {
                 await i.followUp({
                     content: "La communauté a été prévenue.",
@@ -198,6 +199,7 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
 
                 await modMessage.edit({
                     components: newComponents,
+                    content: "",
                 });
             } else if (i.customId === "reportUser") {
                 try {

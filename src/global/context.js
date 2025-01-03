@@ -1,4 +1,4 @@
-let attributes = {};
+const attributes = {};
 
 class Context {
     set(rawKey, value) {

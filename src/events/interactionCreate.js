@@ -1,4 +1,4 @@
-const config = require("../global/config");
+const jsonConfig = require("../../config.json");
 const { MessageFlags } = require("discord.js");
 
 const handleCommandsPermissions = async (Client, interaction) => {
@@ -19,9 +19,9 @@ const handleCommandsPermissions = async (Client, interaction) => {
         }
     }
 
-    const isBotDev = config.bot_devs.includes(interaction.member.id); // mega op person
+    const isBotDev = jsonConfig.bot_devs.includes(interaction.member.id); // mega op person
     const hasModRole = interaction.member.roles.cache.some((role) =>
-        config.mod_role.includes(role.id)
+        jsonConfig.mod_role.includes(role.id)
     );
 
     if (!hasModRole && !isBotDev) {
