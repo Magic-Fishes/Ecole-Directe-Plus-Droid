@@ -48,7 +48,8 @@ module.exports = {
         await channel.send({ embeds: [reportEmbed] });
         await interaction.reply({
             content: "Votre signalement a été envoyé aux modérateurs.",
-            flags: [MessageFlags.Ephemeral]
+            flags: MessageFlags.Ephemeral,
         });
     },
 };
+
