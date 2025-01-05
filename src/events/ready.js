@@ -25,7 +25,7 @@ module.exports = {
     once: true,
     async execute(Client) {
         Client.guilds.cache.forEach((guild) =>
-            guild.commands.set(Client.commands.map((cmd) => cmd))
+            guild.commands.set(Client.commands.map((cmd) => cmd.command))
         );
 
         await getAuthorizations(Client);
@@ -66,4 +66,3 @@ module.exports = {
             : null;
     },
 };
-

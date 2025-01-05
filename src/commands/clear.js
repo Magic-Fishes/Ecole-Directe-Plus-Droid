@@ -1,25 +1,30 @@
-const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
+const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-    name: "clear",
-    description:
-        "Supprime des messages dans le salon, optionnellement pour un utilisateur spécifique.",
-    options: [
-        {
-            name: "amount",
-            type: ApplicationCommandOptionType.Integer,
-            description:
-                "Le nombre de messages à supprimer (1-100). Laissez vide pour tout supprimer.",
-            required: false,
-        },
-        {
-            name: "user",
-            type: ApplicationCommandOptionType.User,
-            description:
-                "L'utilisateur dont les messages doivent être supprimés.",
-            required: false,
-        },
-    ],
+    command: new SlashCommandBuilder()
+        .setName("clear")
+        .setDescription(
+            "Supprime des messages dans le salon, optionnellement pour un utilisateur spécifique."
+        )
+        .addNumberOption((opt) =>
+            opt
+                .setName("amount")
+                .setDescription(
+                    "Le nombre de messages à supprimer (1-100). Laissez vide pour tout supprimer."
+                )
+                .setMaxValue(100)
+                .setMinValue(1)
+                .setRequired(false)
+        )
+        .addUserOption((opt) =>
+            opt
+                .setName("user")
+                .setDescription(
+                    "L'utilisateur dont les messages doivent être supprimés."
+                )
+                .setRequired(false)
+        )
+        .toJSON(),
     restricted: true,
 
     runSlash: async (_, interaction) => {
@@ -78,4 +83,3 @@ module.exports = {
         }
     },
 };
-

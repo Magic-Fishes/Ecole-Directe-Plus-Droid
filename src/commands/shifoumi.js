@@ -1,10 +1,11 @@
 const { SelectMenuBuilder } = require("@discordjs/builders");
-const { ActionRowBuilder } = require("discord.js");
+const { ActionRowBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-    name: "selects",
-    description: "Selects !",
-    options: [],
+    command: new SlashCommandBuilder()
+        .setName("selects")
+        .setDescription("Selects !")
+        .toJSON(),
     restricted: true,
 
     runSlash: (_, interaction) => {
@@ -39,4 +40,3 @@ module.exports = {
         });
     },
 };
-

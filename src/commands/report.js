@@ -1,25 +1,29 @@
 const jsonConfig = require("../../config.json");
-const { EmbedBuilder, MessageFlags } = require("discord.js");
+const {
+    EmbedBuilder,
+    MessageFlags,
+    SlashCommandBuilder,
+} = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
 module.exports = {
-    name: "report",
-    description: "Signaler un utilisateur",
-    options: [
-        {
-            name: "user",
-            description: "Select a user",
-            type: 6,
-            required: true,
-        },
-        {
-            name: "reason",
-            description: "Raison du report",
-            type: 3,
-            required: true,
-        },
-    ],
+    command: new SlashCommandBuilder()
+        .setName("report")
+        .setDescription("Signaler un utilisateur")
+        .addUserOption((opt) =>
+            opt
+                .setName("user")
+                .setDescription("Select a user")
+                .setRequired(true)
+        )
+        .addStringOption((opt) =>
+            opt
+                .setName("reason")
+                .setDescription("Raison du report")
+                .setRequired(true)
+        )
+        .toJSON(),
     restricted: false,
 
     async runSlash(client, interaction) {
@@ -52,4 +56,3 @@ module.exports = {
         });
     },
 };
-

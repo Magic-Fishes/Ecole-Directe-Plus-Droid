@@ -1,18 +1,18 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
 module.exports = {
-    name: "welcome",
-    description: "Bienvenue à un utilisateur",
-    options: [
-        {
-            name: "user",
-            description: "Select a user",
-            type: ApplicationCommandOptionType.User,
-            required: false,
-        },
-    ],
+    command: new SlashCommandBuilder()
+        .setName("welcome")
+        .setDescription("Bienvenue à un utilisateur")
+        .addUserOption((opt) =>
+            opt
+                .setName("user")
+                .setDescription("Select a user")
+                .setRequired(false)
+        )
+        .toJSON(),
     restricted: true,
 
     runSlash: async (_, interaction) => {
@@ -62,7 +62,8 @@ module.exports = {
             })
             .setImage(member.user.displayAvatarURL());
 
-        await interaction.reply({ embeds: [welcomingEmbed, comWelcomingEmbed] });
+        await interaction.reply({
+            embeds: [welcomingEmbed, comWelcomingEmbed],
+        });
     },
 };
-

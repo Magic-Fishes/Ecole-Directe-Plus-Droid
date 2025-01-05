@@ -1,7 +1,10 @@
+const { SlashCommandBuilder } = require("discord.js");
+
 module.exports = {
-    name: "launchstats",
-    description: "Lancer des statistiques",
-    options: [],
+    command: new SlashCommandBuilder()
+        .setName("launchstats")
+        .setDescription("Lancer des statistiques")
+        .toJSON(),
     restricted: true,
 
     runSlash: async (_, interaction) => {
@@ -9,4 +12,3 @@ module.exports = {
         await interaction.editReply("lancement en cours...");
     },
 };
-

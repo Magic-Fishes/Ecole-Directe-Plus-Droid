@@ -1,38 +1,104 @@
 const {
     EmbedBuilder,
-    ApplicationCommandOptionType,
     MessageFlags,
+    SlashCommandBuilder,
 } = require("discord.js");
 
 module.exports = {
-    name: "announcement",
-    description: "Faire une annonce (sous forme d'embed)",
-    options: [
-        {
-            name: "titre",
-            description: "Titre de l'annonce",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
-            name: "description",
-            description: "Description de l'annonce",
-            type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
-            name: "anonyme",
-            description: "Faut-il vous annoncer ?",
-            type: ApplicationCommandOptionType.Boolean,
-            required: true,
-        },
-        {
-            name: "couleur",
-            description: "Couleur de l'embed (défaut bleu)",
-            type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-    ],
+    command: new SlashCommandBuilder()
+        .setName("announcement")
+        .setDescription("Faire une annonce (sous forme d'embed)")
+        .addStringOption((opt) =>
+            opt
+                .setName("titre")
+                .setDescription("Titre de l'annonce")
+                .setRequired(true)
+        )
+        .addStringOption((opt) =>
+            opt
+                .setName("description")
+                .setDescription("Description de l'annonce")
+                .setRequired(true)
+        )
+        .addBooleanOption((opt) =>
+            opt
+                .setName("anonyme")
+                .setDescription("Faut-il vous annoncer ?")
+                .setRequired(true)
+        )
+        .addStringOption((opt) =>
+            opt
+                .setName("couleur")
+                .setDescription("Couleur de l'embed (défaut bleu)")
+                .setChoices([
+                    {
+                        name: "Rouge foncé",
+                        value: "#AA0000",
+                    },
+                    {
+                        name: "Rouge",
+                        value: "#FF5555",
+                    },
+                    {
+                        name: "Doré",
+                        value: "#FFAA00",
+                    },
+                    {
+                        name: "Jaune",
+                        value: "#FFFF55",
+                    },
+                    {
+                        name: "Vert foncé",
+                        value: "#00AA00",
+                    },
+                    {
+                        name: "Vert",
+                        value: "#55FF55",
+                    },
+                    {
+                        name: "Bleu Clair",
+                        value: "#55FFFF",
+                    },
+                    {
+                        name: "Bleu Sombre",
+                        value: "#00AAAA",
+                    },
+                    {
+                        name: "Bleu foncé",
+                        value: "#0000AA",
+                    },
+                    {
+                        name: "Bleu",
+                        value: "#5555FF",
+                    },
+                    {
+                        name: "Violet Clair",
+                        value: "#FF55FF",
+                    },
+                    {
+                        name: "Violet foncé",
+                        value: "#AA00AA",
+                    },
+                    {
+                        name: "Blanc",
+                        value: "#FFFFFF",
+                    },
+                    {
+                        name: "Gris",
+                        value: "#AAAAAA",
+                    },
+                    {
+                        name: "Gris foncé",
+                        value: "#555555",
+                    },
+                    {
+                        name: "Noir",
+                        value: "#000000",
+                    },
+                ])
+                .setRequired(false)
+        )
+        .toJSON(),
     restricted: true,
 
     runSlash: async (client, interaction) => {
@@ -53,7 +119,7 @@ module.exports = {
         const announcementEmbedContent = {
             title: interaction.options.getString("titre"),
             description: interaction.options.getString("description"),
-            color: interaction.options.getString("couleur") || "#0000FF",
+            color: interaction.options.getString("couleur") || "#5555FF",
             author: {
                 name: user.username,
                 iconUrl: user.displayAvatarURL,
@@ -79,4 +145,3 @@ module.exports = {
         });
     },
 };
-

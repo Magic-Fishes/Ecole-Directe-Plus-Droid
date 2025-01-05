@@ -1,10 +1,12 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-    name: "dev-ping",
-    description:
-        "ping chaque dev sur dev général pour annoncer une recertification",
-    options: [],
+    command: new SlashCommandBuilder()
+        .setName("dev-ping")
+        .setDescription(
+            "Ping chaque dev sur dev général pour annoncer une recertification"
+        )
+        .toJSON(),
     restricted: true,
 
     runSlash: async (_, interaction) => {
@@ -41,4 +43,3 @@ module.exports = {
         await interaction.reply({ embeds: [announcementEmbed] });
     },
 };
-

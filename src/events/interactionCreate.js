@@ -31,7 +31,7 @@ const handleCommandsPermissions = async (Client, interaction) => {
 
         return interaction.reply({
             content:
-                "❌ Vous n'avez pas les permissions nécessaires pour utiliser cette commande.",
+                ":x: Vous n'avez pas les permissions nécessaires pour utiliser cette commande.",
             flags: MessageFlags.Ephemeral,
         });
     }
@@ -73,4 +73,3 @@ module.exports = {
         await handleComponents(Client, interaction);
     },
 };
-

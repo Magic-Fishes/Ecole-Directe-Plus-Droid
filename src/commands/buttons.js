@@ -1,11 +1,12 @@
 const { ButtonBuilder } = require("@discordjs/builders");
-const { ButtonStyle } = require("discord.js");
+const { ButtonStyle, SlashCommandBuilder } = require("discord.js");
 const { ActionRowBuilder } = require("discord.js");
 
 module.exports = {
-    name: "button",
-    description: "Buttons !",
-    options: [],
+    command: new SlashCommandBuilder()
+        .setName("button")
+        .setDescription("Buttons !")
+        .toJSON(),
     restricted: true,
 
     runSlash: (_, interaction) => {
@@ -30,4 +31,3 @@ module.exports = {
         });
     },
 };
-

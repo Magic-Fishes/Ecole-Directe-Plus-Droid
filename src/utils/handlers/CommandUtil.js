@@ -5,7 +5,7 @@ module.exports = async (Client) => {
     const cwd = process.cwd();
 
     (await glob(`${cwd}/src/commands/**/*.js`)).map(async (commandFile) => {
-        const command = require(
+        const { command, runSlash, restricted } = require(
             ctx.get("IS_WINDOWS") ? `${cwd}/${commandFile}` : `${commandFile}`
         );
 
@@ -14,10 +14,9 @@ module.exports = async (Client) => {
                 `[CMD] - Couldn't load command : No name and/or description - File : ${commandFile}`
             );
 
-        Client.commands.set(command.name, command);
+        Client.commands.set(command.name, { command, runSlash, restricted });
         const commandsList = ctx.get("COMMANDS_LIST");
         commandsList.push(command.name);
         ctx.set("COMMANDS_LIST", commandsList);
     });
 };
-
