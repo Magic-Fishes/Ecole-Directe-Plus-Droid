@@ -31,6 +31,14 @@ module.exports = {
             description: "Couleur de l'embed (défaut bleu)",
             type: ApplicationCommandOptionType.String,
             required: false,
+            choices: [
+                { name: "Bleu", value: "#0000FF" },
+                { name: "Rouge", value: "#FF0000" },
+                { name: "Vert", value: "#00FF00" },
+                { name: "Jaune", value: "#FFFF00" },
+                { name: "Violet", value: "#800080" },
+                { name: "Orange", value: "#FFA500" }
+            ]
         },
     ],
     restricted: true,
@@ -53,7 +61,7 @@ module.exports = {
         const announcementEmbedContent = {
             title: interaction.options.getString("titre"),
             description: interaction.options.getString("description"),
-            color: interaction.options.getString("couleur") || "#0000FF",
+            color: interaction.options.getString("couleur") || "#0080FF",
             author: {
                 name: user.username,
                 iconUrl: user.displayAvatarURL,
@@ -79,4 +87,3 @@ module.exports = {
         });
     },
 };
-
