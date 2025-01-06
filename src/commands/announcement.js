@@ -31,70 +31,14 @@ module.exports = {
                 .setName("couleur")
                 .setDescription("Couleur de l'embed (défaut bleu)")
                 .setChoices([
-                    {
-                        name: "Rouge foncé",
-                        value: "#AA0000",
-                    },
-                    {
-                        name: "Rouge",
-                        value: "#FF5555",
-                    },
-                    {
-                        name: "Doré",
-                        value: "#FFAA00",
-                    },
-                    {
-                        name: "Jaune",
-                        value: "#FFFF55",
-                    },
-                    {
-                        name: "Vert foncé",
-                        value: "#00AA00",
-                    },
-                    {
-                        name: "Vert",
-                        value: "#55FF55",
-                    },
-                    {
-                        name: "Bleu Clair",
-                        value: "#55FFFF",
-                    },
-                    {
-                        name: "Bleu Sombre",
-                        value: "#00AAAA",
-                    },
-                    {
-                        name: "Bleu foncé",
-                        value: "#0000AA",
-                    },
-                    {
-                        name: "Bleu",
-                        value: "#5555FF",
-                    },
-                    {
-                        name: "Violet Clair",
-                        value: "#FF55FF",
-                    },
-                    {
-                        name: "Violet foncé",
-                        value: "#AA00AA",
-                    },
-                    {
-                        name: "Blanc",
-                        value: "#FFFFFF",
-                    },
-                    {
-                        name: "Gris",
-                        value: "#AAAAAA",
-                    },
-                    {
-                        name: "Gris foncé",
-                        value: "#555555",
-                    },
-                    {
-                        name: "Noir",
-                        value: "#000000",
-                    },
+                { name: "Information - Bleu", value: "#0000FF" },
+                { name: "Alerte - Rouge", value: "#FF0000" },
+                { name: "Validation - Vert", value: "#00FF00" },
+                { name: "Attention - Jaune", value: "#FFFF00" },
+                { name: "Update - Violet", value: "#800080" },
+                { name: "Warn - Orange", value: "#FFA500" },
+                { name: "Event - Cyan", value: "#00FFFF" },
+                { name: "Maintenance - Gris", value: "#808080" },
                 ])
                 .setRequired(false)
         )
@@ -119,7 +63,7 @@ module.exports = {
         const announcementEmbedContent = {
             title: interaction.options.getString("titre"),
             description: interaction.options.getString("description"),
-            color: interaction.options.getString("couleur") || "#5555FF",
+            color: interaction.options.getString("couleur") || "#0080FF",
             author: {
                 name: user.username,
                 iconUrl: user.displayAvatarURL,
