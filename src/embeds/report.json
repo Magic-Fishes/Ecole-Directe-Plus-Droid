@@ -1,0 +1,5 @@
+{
+  "title": "⚠️ Nouveau signalement ! ⚠️",
+  "description": "Modos 👮! **{member.globalName}** signale **{reportedUser}** pour la raison suivante:\n\n**Raison:** {report.reason}\n\n⚠️ Attention, il peut toutefois s'agir d'un **faux signalement**, dans ce cas, pensez à prendre des **mesures disciplinaires** envers **{member.globalName}** ⚠️",
+  "color": "#f57600"
+}

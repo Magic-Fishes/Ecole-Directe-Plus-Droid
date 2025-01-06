@@ -28,7 +28,7 @@ module.exports = {
                 url:
                     comAlertEmbedContent.author.url ||
                     "https://www.ecole-directe.plus/",
-                iconURL: comAlertEmbedContent.author.iconUrl,
+                iconURL: comAlertEmbedContent.author.icon_url,
             });
 
         await generalChannel.send({ embeds: [comAlertEmbed] });

@@ -4,7 +4,5 @@ module.exports = {
     restricted: true,
     runSlash: async (client, interaction) => {
         await interaction.reply("Pong!");
-        // console.log(ctx.get());
     },
 };
-

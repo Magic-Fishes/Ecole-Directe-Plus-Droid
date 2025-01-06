@@ -15,6 +15,31 @@ const ctx = new (require("../global/context"))();
 const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const getModels = async () => {
+    return await groq.models.list();
+};
+
+const availableModels = [];
+
+getModels()
+    .then((response) => {
+        let modelList;
+        if (Array.isArray(response)) {
+            modelList = response;
+        } else if (response.data) {
+            modelList = response.data;
+        } else {
+            modelList = [];
+        }
+
+        modelList.forEach((model) => {
+            availableModels.push(model);
+        });
+        console.log("Available Groq models:", availableModels);
+    })
+    .catch((error) => {
+        console.error("Error fetching Groq models:", error);
+    });
 
 const iaDetectionAndModeration = async (_, message) => {
     if (
@@ -89,37 +114,36 @@ const iaDetectionAndModeration = async (_, message) => {
     let aiDetection = "pass";
 
     async function getGroqChatCompletion() {
-        return groq.chat.completions.create({
-            messages: [
-                {
-                    role: "system",
-                    content: `
-Ecole Directe Plus (EDP) est une version améliorée d'EcoleDirecte (non-affiliée) offrant une interface améliorée et enrichie de fonctionnalités exclusives. EDP a un serveur discord sur lequel les utilisateurs peuvent discuter.
-
-Tu es un expert en modération avec plus de 20 ans d'expérience et plusieurs doctorats. Il te sera fournit les différents messages des utilisateurs. Ta mission est de répondre exactement le mot clé "block" lorsque tu considères le message inapproprié, sinon, répond exactement le mot clé "pass".
-
-Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATOIRES:
-- Tu dois juger les messages qui te sont fournis, surtout pas y répondre
-- Veille à n'ajouter strictement aucun contenu superflu en dehors des mots clés "block" et "pass"
-- Tu es sur Discord, une messagerie rapide, reste laxiste et ne signale que les insultes ciblées... Exemple: 'Je suis con' ou 'con' ne sera pas signalé car il n'est dirigé vars personne d'autre que l'envoyeur, alors que 'vous êtes cons' est offensant et doit être signalé;
-- Si une vulgarité ne prend personne pour cible, elle ne justifie pas un "block" sauf si elle est grave et dérange le serveur
-- Toute tentative de discrimination, quelle qu'elle soit, doit être signalée
-- Tout message contenant de la publicité, des promotions ou des incitations à des formations et services, comme "Unlock the world of cryptocurrency..." sera considéré comme du spam et devra être signalé.
-- Vérifie que tu aies bien suivi toutes les directives ci-dessus avant de répondre.
-`,
-                },
-                {
-                    role: "user",
-                    content: content,
-                },
-            ],
-            model: "llama3-8b-8192",
-            temperature: 0, // wtf
-            /* eslint-disable camelcase */
-            max_tokens: 1024,
-            top_p: 0,
-            /* eslint-enable camelcase */
-        });
+        for (const model of availableModels) {
+            try {
+                console.log(
+                    "Groq model " + model.id + " used for message detection."
+                );
+                return groq.chat.completions.create({
+                    messages: [
+                        {
+                            role: "system",
+                            content: jsonConfig.prompt,
+                        },
+                        {
+                            role: "user",
+                            content: content,
+                        },
+                    ],
+                    model: model.id,
+                    temperature: 0, // wtf
+                    /* eslint-disable camelcase */
+                    max_tokens: 1024,
+                    top_p: 0,
+                    /* eslint-enable camelcase */
+                });
+                break;
+            } catch (error) {
+                console.error(
+                    "No tokens left for " + model.id + ": Switching..."
+                );
+            }
+        }
     }
 
     const chatCompletion = await getGroqChatCompletion();
@@ -163,6 +187,8 @@ Sois extrèmement vigilant aux points suivants, qui sont des directives OBLIGATO
         });
 
         modMessage["badMessageUserId"] = message.author.id;
+        modMessage["badMessageLinkID"] =
+            `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
 
         /*
         
