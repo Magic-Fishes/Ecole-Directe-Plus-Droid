@@ -32,12 +32,14 @@ module.exports = {
             type: ApplicationCommandOptionType.String,
             required: false,
             choices: [
-                { name: "Bleu", value: "#0000FF" },
-                { name: "Rouge", value: "#FF0000" },
-                { name: "Vert", value: "#00FF00" },
-                { name: "Jaune", value: "#FFFF00" },
-                { name: "Violet", value: "#800080" },
-                { name: "Orange", value: "#FFA500" }
+                { name: "Information - Bleu", value: "#0000FF" },
+                { name: "Alerte - Rouge", value: "#FF0000" },
+                { name: "Validation - Vert", value: "#00FF00" },
+                { name: "Attention - Jaune", value: "#FFFF00" },
+                { name: "Update - Violet", value: "#800080" },
+                { name: "Warn - Orange", value: "#FFA500" },
+                { name: "Event - Cyan", value: "#00FFFF" },
+                { name: "Maintenance - Gris", value: "#808080" },
             ]
         },
     ],
