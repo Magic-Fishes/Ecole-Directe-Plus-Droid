@@ -12,6 +12,7 @@
     "author": "As De Pique :) / in collaboration with Ewalwi (:",
     "license": "ISC",
     "dependencies": {
+        "axios": "^1.7.9",
         "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
         "glob": "^11.0.0",

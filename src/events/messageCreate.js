@@ -35,7 +35,6 @@ getModels()
         modelList.forEach((model) => {
             availableModels.push(model);
         });
-        console.log("Available Groq models:", availableModels);
     })
     .catch((error) => {
         console.error("Error fetching Groq models:", error);

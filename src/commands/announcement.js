@@ -2,6 +2,7 @@ const {
     EmbedBuilder,
     ApplicationCommandOptionType,
     MessageFlags,
+    Colors,
 } = require("discord.js");
 
 module.exports = {
@@ -63,7 +64,7 @@ module.exports = {
         const announcementEmbed = new EmbedBuilder()
             .setTitle(announcementEmbedContent.title)
             .setDescription(announcementEmbedContent.description)
-            .setColor(announcementEmbedContent.color)
+            .setColor(announcementEmbedContent.Colors.color)
             .setAuthor({
                 name: announcementEmbedContent.author.name,
                 iconURL: announcementEmbedContent.author.iconUrl,
@@ -79,4 +80,3 @@ module.exports = {
         });
     },
 };
-
