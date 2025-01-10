@@ -15,31 +15,51 @@ const ctx = new (require("../global/context"))();
 const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-const getModels = async () => {
-    return await groq.models.list();
-};
 
+const getModels = async () => {
+    try {
+        const response = await groq.models.list();
+        let modelList = Array.isArray(response)
+            ? response
+            : response.data || [];
+
+        modelList.sort((a, b) => {
+            if (a.owned_by < b.owned_by) return -1;
+            if (a.owned_by > b.owned_by) return 1;
+            return 0;
+        });
+
+        return modelList;
+    } catch (error) {
+        console.error("Error fetching Groq models:", error);
+        return [];
+    }
+};
+const sortModels = (models) => {
+    const customOrder = [
+        "Mistral AI",
+        "Meta",
+        "Google",
+        "OpenAI",
+        "Hugging Face",
+    ];
+
+    models.sort((a, b) => {
+        const orderA = customOrder.indexOf(a.owned_by);
+        const orderB = customOrder.indexOf(b.owned_by);
+
+        if (orderA === -1 && orderB === -1) return 0;
+        if (orderA === -1) return 1;
+        if (orderB === -1) return -1;
+        return orderA - orderB;
+    });
+};
 const availableModels = [];
 
-getModels()
-    .then((response) => {
-        let modelList;
-        if (Array.isArray(response)) {
-            modelList = response;
-        } else if (response.data) {
-            modelList = response.data;
-        } else {
-            modelList = [];
-        }
-
-        modelList.forEach((model) => {
-            availableModels.push(model);
-        });
-        console.log("Available Groq models:", availableModels);
-    })
-    .catch((error) => {
-        console.error("Error fetching Groq models:", error);
-    });
+getModels().then((models) => {
+    availableModels.push(...models);
+    sortModels(availableModels);
+});
 
 const iaDetectionAndModeration = async (_, message) => {
     if (
@@ -115,6 +135,7 @@ const iaDetectionAndModeration = async (_, message) => {
 
     async function getGroqChatCompletion() {
         for (const model of availableModels) {
+            console.log(model);
             try {
                 console.log(
                     "Groq model " + model.id + " used for message detection."
@@ -130,26 +151,28 @@ const iaDetectionAndModeration = async (_, message) => {
                             content: content,
                         },
                     ],
-                    model: model.id,
+                    model: await model.id,
                     temperature: 0, // wtf
                     /* eslint-disable camelcase */
                     max_tokens: 1024,
                     top_p: 0,
                     /* eslint-enable camelcase */
                 });
-                break;
             } catch (error) {
                 console.error(
                     "No tokens left for " + model.id + ": Switching..."
                 );
+                getGroqChatCompletion();
             }
         }
     }
 
     const chatCompletion = await getGroqChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
+    console.log("prompte", aiDetection);
+    console.log(jsonConfig.prompt);
 
-    if (aiDetection === "block") {
+    if (aiDetection.includes("block")) {
         const modWarnEmbedContent = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/warnMod.json"),
@@ -207,8 +230,8 @@ const iaDetectionAndModeration = async (_, message) => {
         est récupérable dans l'interraction du bouton dans lequel il est chargé.
         Voilà, ce message est bcp trop long mais j'espère que c'est clair. Allez faire
         un tour du coté du code du bouton.
-
-         */
+        
+        */
 
         const filter = (i) =>
             i.customId === "warnCommunity" || i.customId === "reportUser";
