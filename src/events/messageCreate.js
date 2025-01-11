@@ -15,51 +15,31 @@ const ctx = new (require("../global/context"))();
 const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
 const getModels = async () => {
-    try {
-        const response = await groq.models.list();
-        let modelList = Array.isArray(response)
-            ? response
-            : response.data || [];
-
-        modelList.sort((a, b) => {
-            if (a.owned_by < b.owned_by) return -1;
-            if (a.owned_by > b.owned_by) return 1;
-            return 0;
-        });
-
-        return modelList;
-    } catch (error) {
-        console.error("Error fetching Groq models:", error);
-        return [];
-    }
+    return await groq.models.list();
 };
-const sortModels = (models) => {
-    const customOrder = [
-        "Mistral AI",
-        "Meta",
-        "Google",
-        "OpenAI",
-        "Hugging Face",
-    ];
 
-    models.sort((a, b) => {
-        const orderA = customOrder.indexOf(a.owned_by);
-        const orderB = customOrder.indexOf(b.owned_by);
-
-        if (orderA === -1 && orderB === -1) return 0;
-        if (orderA === -1) return 1;
-        if (orderB === -1) return -1;
-        return orderA - orderB;
-    });
-};
 const availableModels = [];
 
-getModels().then((models) => {
-    availableModels.push(...models);
-    sortModels(availableModels);
-});
+getModels()
+    .then((response) => {
+        let modelList;
+        if (Array.isArray(response)) {
+            modelList = response;
+        } else if (response.data) {
+            modelList = response.data;
+        } else {
+            modelList = [];
+        }
+
+        modelList.forEach((model) => {
+            availableModels.push(model);
+        });
+        console.log("Available Groq models:", availableModels);
+    })
+    .catch((error) => {
+        console.error("Error fetching Groq models:", error);
+    });
 
 const iaDetectionAndModeration = async (_, message) => {
     if (
@@ -150,27 +130,26 @@ const iaDetectionAndModeration = async (_, message) => {
                             content: content,
                         },
                     ],
-                    model: await model.id,
+                    model: model.id,
                     temperature: 0, // wtf
                     /* eslint-disable camelcase */
                     max_tokens: 1024,
                     top_p: 0,
                     /* eslint-enable camelcase */
                 });
+                break;
             } catch (error) {
                 console.error(
                     "No tokens left for " + model.id + ": Switching..."
                 );
-                getGroqChatCompletion();
             }
         }
     }
 
     const chatCompletion = await getGroqChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
-    console.log("ai answer :", aiDetection);
 
-    if (aiDetection.includes("block")) {
+    if (aiDetection === "block") {
         const modWarnEmbedContent = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/warnMod.json"),
@@ -210,6 +189,26 @@ const iaDetectionAndModeration = async (_, message) => {
         modMessage["badMessageUserId"] = message.author.id;
         modMessage["badMessageLinkID"] =
             `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
+
+        /*
+        
+        Ok, j'explique le bordel qui est ici (1ligne mdr) en fr prcq c'est compliqué.
+        Nous avons rencontré un problème, sur le pannel de modération (les 2 boutons)
+        lorsqu'on signalait un utilisateur EN MP, c'était le dernier membre a avoir
+        envoyé un message qui était report (et donc pas le farfadet en question).
+        Ce qui est légèrement problématique (juste une modération qui ping un peu tout
+        le monde mdr). Donc j'ai cherché très longtemps (5min je crois) une solution
+        et la voilà... une ligne :)
+        En fait l'idée est d'injecter l'id du farfadet dans l'objet de l'embed du message
+        (oui là ça se corse...) et ainsi pouvoir récupérer dans le code du bouton, soit
+        dans l'interraction. Donc dans la case message de l'interraction, on y retrouve
+        l'id du farfadet et donc, pour chaque message (tant que le bot n'est pas déchargé)
+        l'id de la personne qui semble chiante est stocké directement dans le message qui
+        est récupérable dans l'interraction du bouton dans lequel il est chargé.
+        Voilà, ce message est bcp trop long mais j'espère que c'est clair. Allez faire
+        un tour du coté du code du bouton.
+
+         */
 
         const filter = (i) =>
             i.customId === "warnCommunity" || i.customId === "reportUser";
