@@ -1,5 +1,5 @@
 const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
-
+const { initializeLogger } = require("../utils/logger");
 const ctx = new (require("../global/context"))();
 require("dotenv").config();
 
@@ -64,6 +64,15 @@ module.exports = {
         process.env.NODE_ENV === "development"
             ? console.log(`BOT Running in ${process.env.NODE_ENV}`)
             : null;
+
+        // logger
+        const logChannel = Client.channels.cache.get("1324463014279250072");
+        if (logChannel) {
+            initializeLogger(logChannel);
+            console.log("Logger initialized with Discord channel");
+        } else {
+            console.error("Could not find the specified log channel");
+        }
     },
 };
 

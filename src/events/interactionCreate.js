@@ -69,8 +69,11 @@ module.exports = {
     name: "interactionCreate",
     once: false,
     async execute(Client, interaction) {
-        await handleCommandsPermissions(Client, interaction);
-        await handleComponents(Client, interaction);
+        if (interaction.isCommand()) {
+            await handleCommandsPermissions(Client, interaction);
+        } else {
+            await handleComponents(Client, interaction);
+        }
     },
 };
 
