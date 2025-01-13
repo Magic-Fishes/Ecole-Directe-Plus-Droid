@@ -15,31 +15,6 @@ const ctx = new (require("../global/context"))();
 const jsonConfig = require("../../config.json");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-const getModels = async () => {
-    return await groq.models.list();
-};
-
-const availableModels = [];
-
-getModels()
-    .then((response) => {
-        let modelList;
-        if (Array.isArray(response)) {
-            modelList = response;
-        } else if (response.data) {
-            modelList = response.data;
-        } else {
-            modelList = [];
-        }
-
-        modelList.forEach((model) => {
-            availableModels.push(model);
-        });
-        console.log("Available Groq models:", availableModels);
-    })
-    .catch((error) => {
-        console.error("Error fetching Groq models:", error);
-    });
 
 const iaDetectionAndModeration = async (_, message) => {
     if (
@@ -114,40 +89,36 @@ const iaDetectionAndModeration = async (_, message) => {
     let aiDetection = "pass";
 
     async function getGroqChatCompletion() {
-        for (const model of availableModels) {
-            try {
-                console.log(
-                    "Groq model " + model.id + " used for message detection."
-                );
-                return groq.chat.completions.create({
-                    messages: [
-                        {
-                            role: "system",
-                            content: jsonConfig.prompt,
-                        },
-                        {
-                            role: "user",
-                            content: content,
-                        },
-                    ],
-                    model: model.id,
-                    temperature: 0, // wtf
-                    /* eslint-disable camelcase */
-                    max_tokens: 1024,
-                    top_p: 0,
-                    /* eslint-enable camelcase */
-                });
-                break;
-            } catch (error) {
-                console.error(
-                    "No tokens left for " + model.id + ": Switching..."
-                );
-            }
+        try {
+            return groq.chat.completions.create({
+                messages: [
+                    {
+                        role: "system",
+                        content: jsonConfig.prompt,
+                    },
+                    {
+                        role: "user",
+                        content: content,
+                    },
+                ],
+                model: "llama3-8b-8192",
+                temperature: 0,
+                /* eslint-disable camelcase */
+                max_tokens: 1024,
+                top_p: 0,
+                /* eslint-enable camelcase */
+            });
+        } catch (error) {
+            console.error(
+                "No tokens left for current model" // Je mets ça comme ça mais je ne pense pas que le modèle puisse se vider de ses tokens si facilement -- ewalwi
+            );
         }
     }
 
     const chatCompletion = await getGroqChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
+
+    console.log("AI Detection: " + aiDetection);
 
     if (aiDetection === "block") {
         const modWarnEmbedContent = JSON.parse(
