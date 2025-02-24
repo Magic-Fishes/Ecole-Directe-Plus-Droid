@@ -81,9 +81,6 @@ const iaDetectionAndModeration = async (_, message) => {
     const generalChannel = message.guild.channels.cache.find(
         (channel) => channel.id === jsonConfig.general_channel
     );
-    const member = message.member;
-    ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :) -> in french "flm"
-    ctx.set("MESSAGE_CREATE_MEMBER", member);
     const content = message.content.toLowerCase();
 
     let aiDetection = "pass";
@@ -101,7 +98,7 @@ const iaDetectionAndModeration = async (_, message) => {
                         content: content,
                     },
                 ],
-                model: "llama3-8b-8192",
+                model: "llama3-70b-8192",
                 temperature: 0,
                 /* eslint-disable camelcase */
                 max_tokens: 1024,
@@ -120,7 +117,10 @@ const iaDetectionAndModeration = async (_, message) => {
 
     console.log("AI Detection: " + aiDetection);
 
-    if (aiDetection === "block") {
+    if (aiDetection === "block") {    
+        const member = message.member;
+        ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :) -> in french "flm"
+        ctx.set("MESSAGE_CREATE_MEMBER", member);
         const modWarnEmbedContent = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/warnMod.json"),
@@ -148,6 +148,10 @@ const iaDetectionAndModeration = async (_, message) => {
             new ButtonBuilder()
                 .setCustomId("reportUser")
                 .setLabel("Signaler l'utilisateur")
+                .setStyle(ButtonStyle.Danger),
+            new ButtonBuilder()
+                .setCustomId("deleteMessage")
+                .setLabel("Supprimer le message")
                 .setStyle(ButtonStyle.Danger)
         );
 
@@ -161,28 +165,10 @@ const iaDetectionAndModeration = async (_, message) => {
         modMessage["badMessageLinkID"] =
             `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
 
-        /*
-        
-        Ok, j'explique le bordel qui est ici (1ligne mdr) en fr prcq c'est compliqué.
-        Nous avons rencontré un problème, sur le pannel de modération (les 2 boutons)
-        lorsqu'on signalait un utilisateur EN MP, c'était le dernier membre a avoir
-        envoyé un message qui était report (et donc pas le farfadet en question).
-        Ce qui est légèrement problématique (juste une modération qui ping un peu tout
-        le monde mdr). Donc j'ai cherché très longtemps (5min je crois) une solution
-        et la voilà... une ligne :)
-        En fait l'idée est d'injecter l'id du farfadet dans l'objet de l'embed du message
-        (oui là ça se corse...) et ainsi pouvoir récupérer dans le code du bouton, soit
-        dans l'interraction. Donc dans la case message de l'interraction, on y retrouve
-        l'id du farfadet et donc, pour chaque message (tant que le bot n'est pas déchargé)
-        l'id de la personne qui semble chiante est stocké directement dans le message qui
-        est récupérable dans l'interraction du bouton dans lequel il est chargé.
-        Voilà, ce message est bcp trop long mais j'espère que c'est clair. Allez faire
-        un tour du coté du code du bouton.
-
-         */
-
         const filter = (i) =>
-            i.customId === "warnCommunity" || i.customId === "reportUser";
+            i.customId === "warnCommunity" ||
+            i.customId === "reportUser" ||
+            i.customId === "deleteMessage";
 
         const collector = modMessage.createMessageComponentCollector({
             filter,
@@ -268,6 +254,13 @@ const iaDetectionAndModeration = async (_, message) => {
                         );
                     }
                 }
+            } else if (collectorInteraction.customId === "deleteMessage") {
+                await modMessage.delete();
+                await collectorInteraction.followUp({
+                    content: "Le message a été supprimé.",
+                    flags: MessageFlags.Ephemeral,
+                });
+                return;
             }
         });
 
@@ -282,4 +275,3 @@ module.exports = {
         iaDetectionAndModeration(client, message);
     },
 };
-
