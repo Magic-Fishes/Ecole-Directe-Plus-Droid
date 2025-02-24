@@ -18,7 +18,7 @@ module.exports = {
             description: "Raison du report",
             type: 3,
             required: true,
-        },
+        }
     ],
     restricted: false,
 
@@ -36,7 +36,10 @@ module.exports = {
         const description = reportEmbedContent.description
             .replaceAll("{member.globalName}", interaction.user.globalName)
             .replace("{reportedUser}", user.globalName)
-            .replace("{report.reason}", reason);
+            .replace("{report.reason}", reason)
+            .replace("{report.channel}", interaction.channel.name)
+            .replace("{report.date}", new Date().toLocaleString().split(" ")[0])
+            .replace("{report.time}", new Date().toLocaleString().split(" ")[1]);
 
         const reportEmbed = new EmbedBuilder()
             .setTitle(reportEmbedContent.title)
@@ -52,4 +55,3 @@ module.exports = {
         });
     },
 };
-
