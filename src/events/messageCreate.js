@@ -20,9 +20,8 @@ const iaDetectionAndModeration = async (_, message) => {
     if (
         message.author.bot ||
         (message.content.toLowerCase().endsWith(".safemsg") &&
-            message.member.roles.cache.some((role) =>
-                jsonConfig.op_role.includes(role.id)
-            ))
+            jsonConfig.bot_devs.includes(message.author.id)
+        )
     ) {
         const opEmbedData = JSON.parse(
             fs.readFileSync(
