@@ -1,9 +1,9 @@
 {
-    "title": "📢 Annonce Importante pour l'Équipe de Développeurs 📢",
-    "description": "Chers {dev_role}, \n\nNous sommes ravis de vous informer qu'un **sondage** sera bientôt transmis afin de recueillir vos **ambitions** et vos **idées** concernant votre collaboration sur **Ecole Directe Plus**. 🚀\n\n📝 **Pourquoi ce sondage est-il important ?**\n- Vos réponses sont **essentielles** pour comprendre vos attentes.\n- Elles nous aideront à **renforcer notre communauté** et à garder un serveur actif et dynamique. 🌟\n\n🕒 **Restez à l'écoute !** \nLe sondage arrivera **dans les plus brefs délais** et vous serez interrogés **individuellement**. Nous comptons sur votre **participation** pour faire avancer notre projet ensemble !\n\n_**Ps:** Sont exemptés de recertification les **contributeurs de version {active_dev_role}**, et, bien sûr, les **leaders**_.\n\nMerci pour votre engagement et votre collaboration ! 🤝",
+    "title": " 📢 Annonce Importante pour l'Équipe de Développeurs 👥",
+    "description": "Chers {dev-role} 👋, \n\nNous sommes ravis de vous informer qu'un **sondage** 📊 sera bientôt transmis afin de recueillir vos **ambitions** 🚀 et vos **idées** 💡 concernant votre collaboration sur **Ecole Directe Plus**. \n\n **Pourquoi ce sondage est-il important ?** 🤔\n- Vos réponses sont **essentielles** 🔑 pour comprendre vos attentes.\n- Elles nous aideront à **renforcer notre communauté** 🤝 et à garder un serveur actif et dynamique. \n\n **Restez à l'écoute !** 👂 \nLe sondage arrivera **dans les plus brefs délais** ⏱️ et vous serez interrogés **individuellement**. Nous comptons sur votre **participation** 🙌 pour faire avancer notre projet ensemble ! 🌟\n\n_**Ps:** Sont exemptés de recertification les **contributeurs de version {active-dev-role}**, et, bien sûr, les **leaders** 🏆_.\n\nMerci pour votre engagement et votre collaboration ! 💖",
     "color": "#0004ff",
     "author": {
       "name": "Ecole Directe Plus",
-      "icon_url": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png"
+      "icon-url": "https://pbs.twimg.com/profile-images/1680302515097673729/x1cHA0q5-400x400.png"
     }
 }

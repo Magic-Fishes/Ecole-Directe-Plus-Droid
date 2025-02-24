@@ -19,7 +19,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const iaDetectionAndModeration = async (_, message) => {
     if (
         message.author.bot ||
-        (message.content.endsWith(".safemsg") &&
+        (message.content.toLowerCase().endsWith(".safemsg") &&
             message.member.roles.cache.some((role) =>
                 jsonConfig.op_role.includes(role.id)
             ))

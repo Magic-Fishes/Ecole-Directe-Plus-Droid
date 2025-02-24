@@ -2,8 +2,8 @@ const { SelectMenuBuilder } = require("@discordjs/builders");
 const { ActionRowBuilder } = require("discord.js");
 
 module.exports = {
-    name: "selects",
-    description: "Selects !",
+    name: "shifoumi",
+    description: "Play shifoumi with me",
     options: [],
     restricted: true,
 
