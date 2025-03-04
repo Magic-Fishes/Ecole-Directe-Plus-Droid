@@ -20,8 +20,7 @@ const iaDetectionAndModeration = async (_, message) => {
     if (
         message.author.bot ||
         (message.content.toLowerCase().endsWith(".safemsg") &&
-            jsonConfig.bot_devs.includes(message.author.id)
-        )
+            jsonConfig.bot_devs.includes(message.author.id))
     ) {
         const opEmbedData = JSON.parse(
             fs.readFileSync(
@@ -83,7 +82,6 @@ const iaDetectionAndModeration = async (_, message) => {
     const content = message.content.toLowerCase();
 
     let aiDetection = "pass";
-
     async function getGroqChatCompletion() {
         try {
             return groq.chat.completions.create({
@@ -114,9 +112,7 @@ const iaDetectionAndModeration = async (_, message) => {
     const chatCompletion = await getGroqChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
 
-    console.log("AI Detection: " + aiDetection);
-
-    if (aiDetection === "block") {    
+    if (aiDetection === "block") {
         const member = message.member;
         ctx.set("MESSAGE_CREATE_GENERAL_CHANNEL", generalChannel); // I can't be bothered to export message in the buttons so... :) -> in french "flm"
         ctx.set("MESSAGE_CREATE_MEMBER", member);
@@ -153,7 +149,6 @@ const iaDetectionAndModeration = async (_, message) => {
                 .setLabel("Supprimer le message")
                 .setStyle(ButtonStyle.Danger)
         );
-
         const modMessage = await modChannel.send({
             embeds: [modWarnEmbed],
             components: [row],
@@ -254,7 +249,6 @@ const iaDetectionAndModeration = async (_, message) => {
                     }
                 }
             } else if (collectorInteraction.customId === "deleteMessage") {
-                await modMessage.delete();
                 await collectorInteraction.followUp({
                     content: "Le message a été supprimé.",
                     flags: MessageFlags.Ephemeral,
@@ -274,3 +268,4 @@ module.exports = {
         iaDetectionAndModeration(client, message);
     },
 };
+
