@@ -13,6 +13,7 @@ const path = require("path");
 const ctx = new (require("../global/context"))();
 
 const jsonConfig = require("../../config.json");
+const logger = require("../helpers/logger");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -47,13 +48,11 @@ const iaDetectionAndModeration = async (_, message) => {
                 flags: MessageFlags.Ephemeral,
             });
 
-            console.log("[AUTOMOD] - Utilisateur OP ignoré");
-
             setTimeout(() => {
                 replyMsg
                     .delete()
                     .catch((err) =>
-                        console.error(
+                        logger.error(
                             "[AUTOMOD] - Erreur lors de la suppression du message :",
                             err
                         )
@@ -66,7 +65,6 @@ const iaDetectionAndModeration = async (_, message) => {
                 );
             }
         }
-        console.log("[AUTOMOD] - Utilisateur OP ignoré");
         return;
     }
 
@@ -103,8 +101,9 @@ const iaDetectionAndModeration = async (_, message) => {
                 /* eslint-enable camelcase */
             });
         } catch (error) {
-            console.error(
-                "No tokens left for current model" // Je mets ça comme ça mais je ne pense pas que le modèle puisse se vider de ses tokens si facilement -- ewalwi
+            logger.error(
+                "No tokens left for current model",
+                error // Je mets ça comme ça mais je ne pense pas que le modèle puisse se vider de ses tokens si facilement -- ewalwi
             );
         }
     }
@@ -243,8 +242,9 @@ const iaDetectionAndModeration = async (_, message) => {
                     });
                 } catch (error) {
                     if (error.code === 50007) {
-                        console.log(
-                            "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur."
+                        logger.log(
+                            "[AUTOMOD] - Impossible d'envoyer un message privé à l'utilisateur.",
+                            error
                         );
                     }
                 }
@@ -287,7 +287,7 @@ const iaDetectionAndModeration = async (_, message) => {
             }
         });
 
-        console.log("[AUTOMOD] - Opération de modération effectuée.");
+        logger.input("[AUTOMOD] - Opération de modération effectuée.");
         return;
     }
 };

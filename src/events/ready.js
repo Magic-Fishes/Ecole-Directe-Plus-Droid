@@ -1,3 +1,4 @@
+const logger = require("../helpers/logger");
 const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
 const ctx = new (require("../global/context"))();
 require("dotenv").config();
@@ -65,6 +66,7 @@ module.exports = {
             : null;
 
         // logger
+        logger.info("ready, all done. BOT Running in development");
     },
 };
 

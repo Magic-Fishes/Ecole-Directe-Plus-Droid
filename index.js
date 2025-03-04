@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 require("dotenv").config();
 const ctx = new (require("./src/global/context"))();
 const os = require("os");
+const logger = require("./src/helpers/logger");
 
 const Client = new Discord.Client({ partials: ["CHANNEL"], intents: 53608447 });
 
@@ -19,12 +20,10 @@ const progInit = () => {
         arch: os.arch(),
     };
 
+    logger.info(`BOT VERSION : ${botVersion}`);
+
     if (authorizedArch.includes(osExecutionDetails.arch)) {
         ctx.set("RUNNING_SYSTEM", osExecutionDetails);
-
-        console.log(
-            `[LAD] - Active running system is authorized and registered : ${osExecutionDetails.platform}`
-        );
     } else {
         console.log("[LAD] - Active running system is unauthorized. Stopping.");
         process.abort();
@@ -34,15 +33,15 @@ const progInit = () => {
 
     switch (osExecutionDetails.platform) {
         case "linux":
-            console.log("[LAD] - Active system is not Windows, registering.");
             ctx.set("IS_WINDOWS", false);
             break;
         case "win32":
-            console.log("[LAD] - Active system is Windows, registering.");
             ctx.set("IS_WINDOWS", true);
             break;
     }
-    console.log("[LAD] - Bot status set to default value 'Sleepping 🌛'.");
+    logger.info(
+        `p-${osExecutionDetails.platform} / arch-${osExecutionDetails.arch}`
+    );
 };
 
 const loadComponents = () => {
@@ -74,5 +73,6 @@ process.on("warning", (...args) => {
 
 progInit();
 loadComponents();
+logger.info("Script started, waiting for connection.");
 Client.login(process.env.TOKEN);
 

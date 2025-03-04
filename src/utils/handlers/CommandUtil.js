@@ -1,4 +1,5 @@
 const { glob } = require("glob");
+const logger = require("../../helpers/logger");
 const ctx = new (require("../../global/context"))();
 
 module.exports = async (Client) => {
@@ -10,7 +11,7 @@ module.exports = async (Client) => {
         );
 
         if (!command.name || !command.description)
-            return console.log(
+            return logger.error(
                 `[CMD] - Couldn't load command : No name and/or description - File : ${commandFile}`
             );
 

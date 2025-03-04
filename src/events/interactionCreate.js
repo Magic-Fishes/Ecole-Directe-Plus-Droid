@@ -1,5 +1,6 @@
 const jsonConfig = require("../../config.json");
 const { MessageFlags } = require("discord.js");
+const logger = require("../helpers/logger");
 
 const handleCommandsPermissions = async (Client, interaction) => {
     if (!interaction.isCommand()) return;
@@ -10,10 +11,10 @@ const handleCommandsPermissions = async (Client, interaction) => {
         try {
             return await command.runSlash(Client, interaction);
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             await interaction.reply({
                 content:
-                    "Une erreur est survenue lors de l'exécution de la commande.",
+                    "Une erreur est survenue lors de l'exécution de la commande. Inscrit dans les logs",
                 flags: MessageFlags.Ephemeral,
             });
         }
@@ -25,10 +26,6 @@ const handleCommandsPermissions = async (Client, interaction) => {
     );
 
     if (!hasModRole && !isBotDev) {
-        console.log(
-            "[PERMISSIONS] - Utilisateur non autorisé à exécuter la commande."
-        );
-
         return interaction.reply({
             content:
                 "❌ Vous n'avez pas les permissions nécessaires pour utiliser cette commande.",
@@ -38,10 +35,10 @@ const handleCommandsPermissions = async (Client, interaction) => {
     try {
         await command.runSlash(Client, interaction);
     } catch (error) {
-        console.error(error);
+        logger.error(error);
         await interaction.reply({
             content:
-                "Une erreur est survenue lors de l'exécution de la commande.",
+                "Une erreur est survenue lors de l'exécution de la commande. Inscrit dans les logs",
             flags: MessageFlags.Ephemeral,
         });
     }
