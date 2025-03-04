@@ -253,6 +253,36 @@ const iaDetectionAndModeration = async (_, message) => {
                     content: "Le message a été supprimé.",
                     flags: MessageFlags.Ephemeral,
                 });
+
+                const previousContent =
+                    modMessage.content === `<@&${jsonConfig.mod_role}>`
+                        ? ""
+                        : modMessage.content;
+                actionMessage = `|| ${userMention} a supprimé le message". ||`;
+
+                const newComponents = modMessage.components
+                    .map((row) => {
+                        const filteredComponents = row.components.filter(
+                            (component) =>
+                                component.customId !== "deleteMessage"
+                        );
+
+                        return filteredComponents.length > 0
+                            ? new ActionRowBuilder().addComponents(
+                                  filteredComponents
+                              )
+                            : null;
+                    })
+                    .filter(Boolean);
+
+                const updatedContent =
+                    `${previousContent}\n${actionMessage}`.trim();
+
+                await modMessage.edit({
+                    components: newComponents,
+                    content: updatedContent,
+                });
+
                 return;
             }
         });
