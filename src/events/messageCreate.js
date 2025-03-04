@@ -287,7 +287,7 @@ const iaDetectionAndModeration = async (_, message) => {
             }
         });
 
-        logger.input("[AUTOMOD] - Opération de modération effectuée.");
+        logger.info("[AUTOMOD] - Opération de modération effectuée.");
         return;
     }
 };
