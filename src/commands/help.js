@@ -21,7 +21,8 @@ module.exports = {
                 { name: '/prompt', value: '<DevReserved/> Fetch AIDetection Prompt 🤖' },
                 { name: '/report', value: 'Signaler un utilisateur. 🚨' },
                 { name: '/shifoumi', value: 'Lance un shifoumi en 1 manche. 🎲' },
-                { name: '/welcome', value: 'Souhaite la bienvenue à un utilisateur spécifique. 🎉' }
+                { name: '/welcome', value: 'Souhaite la bienvenue à un utilisateur spécifique. 🎉' },
+                { name: '/botinfo', value: 'Affiche toutes les informations du bot. 🤖' }
             )
 
         await interaction.reply({ embeds: [embed] });
