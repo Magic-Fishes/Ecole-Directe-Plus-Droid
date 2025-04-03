@@ -1,6 +1,7 @@
 const jsonConfig = require("../../config.json");
 const { MessageFlags } = require("discord.js");
 const logger = require("../helpers/logger");
+const { handleButtonClick } = require("../commands/setup-ticket"); // Importer la logique du bouton de création de ticket
 
 const handleCommandsPermissions = async (Client, interaction) => {
     if (!interaction.isCommand()) return;
@@ -46,17 +47,19 @@ const handleCommandsPermissions = async (Client, interaction) => {
 
 const handleComponents = async (Client, interaction) => {
     if (interaction.isButton()) {
-        const button = Client.buttons.get(interaction.customId);
-        // console.log(Client.buttons);
-        // console.log(Client.selects);
-        if (!button) return interaction.reply("Ce bouton n'existe pas");
-        button.runInteraction(Client, interaction);
+        // Gérer les interactions des boutons
+        if (interaction.customId === 'create-ticket') {
+            // Appeler la fonction de gestion du bouton pour créer un ticket
+            await handleButtonClick(interaction);  // Assure-toi que cette fonction est correctement définie dans ton fichier de gestion des tickets
+        } else {
+            const button = Client.buttons.get(interaction.customId);
+            if (!button) return interaction.reply("Ce bouton n'existe pas");
+            button.runInteraction(Client, interaction);
+        }
     } else if (interaction.isStringSelectMenu()) {
-        // console.log(Client.buttons);
-        // console.log(Client.selects);
         const select = Client.selects.get(interaction.customId);
         if (!select)
-            return interaction.reply("Ce menu de séléction n'existe pas");
+            return interaction.reply("Ce menu de sélection n'existe pas");
 
         select.runInteraction(Client, interaction);
     }
@@ -73,4 +76,3 @@ module.exports = {
         }
     },
 };
-
