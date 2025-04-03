@@ -9,18 +9,15 @@ module.exports = {
     runSlash: async (_, interaction) => {
         const displayname = interaction.user.displayName;
 
-        // ID de la catégorie où les tickets seront créés
-        const categoryId = '1336225429857636352';
+        const categoryId = '1315779992915017738';
 
-        // Créer un bouton pour créer un ticket
         const button = new ButtonBuilder()
-            .setCustomId('create-ticket') // ID du bouton pour identifier l'action
+            .setCustomId('create-ticket')
             .setLabel('Créer un ticket')
-            .setStyle(1); // Style du bouton (couleur)
+            .setStyle(1);
 
-        const row = new ActionRowBuilder().addComponents(button); // Ajouter le bouton à une ligne
+        const row = new ActionRowBuilder().addComponents(button);
 
-        // Embed pour informer que le système de ticket est prêt
         const embed = new EmbedBuilder()
             .setColor('#0004ff')
             .setTitle('Système de Ticket')
@@ -31,10 +28,9 @@ module.exports = {
                 url: 'https://ecole-directe.plus'
             });
 
-        // Envoyer le message avec l'embed et le bouton
-        const channel = interaction.channel
+        const channel = interaction.channel;
 
-        await interaction.reply({ content: 'Le message des tickets a été setup ici !!!', ephemeral: true })
+        await interaction.reply({ content: 'Le message des tickets a été setup ici !!!', ephemeral: true });
 
         await channel.send({
             embeds: [embed],
@@ -43,15 +39,13 @@ module.exports = {
     },
 };
 
-// Écouter les interactions de boutons
 module.exports.handleButtonClick = async (interaction) => {
     if (interaction.customId === 'create-ticket') {
         const displayname = interaction.user.displayName;
 
-        const categoryId = '1336225429857636352';
+        const categoryId = '1315779992915017738';
 
         try {
-            // Vérifier que la catégorie existe
             const category = await interaction.guild.channels.fetch(categoryId);
             if (!category) {
                 return interaction.reply({
@@ -70,10 +64,9 @@ module.exports.handleButtonClick = async (interaction) => {
                 });
             }
 
-            // Créer un canal de texte pour le ticket
             const newChannel = await interaction.guild.channels.create({
                 name: `ticket-${displayname}`,
-                type: 0, // Canal texte (GUILD_TEXT)
+                type: 0,
                 parent: categoryId,
                 permissionOverwrites: [
                     {
@@ -101,10 +94,8 @@ module.exports.handleButtonClick = async (interaction) => {
                     url: 'https://ecole-directe.plus'
                 });
 
-            // Envoyer un message dans le salon créé avec l'embed
             await newChannel.send({ embeds: [embedSuccess] });
 
-            // Envoyer un message à l'utilisateur dans le salon où l'interaction a eu lieu
             await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -118,13 +109,12 @@ module.exports.handleButtonClick = async (interaction) => {
                             url: 'https://ecole-directe.plus'
                         })
                 ],
-                ephemeral: true // Rendre le message éphémère
+                ephemeral: true
             });
 
         } catch (error) {
             console.error(error);
 
-            // Si une erreur survient, envoyer un message d'erreur dans le salon où l'interaction a eu lieu
             await interaction.channel.send({
                 embeds: [
                     new EmbedBuilder()

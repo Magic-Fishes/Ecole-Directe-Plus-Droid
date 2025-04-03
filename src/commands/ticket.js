@@ -10,8 +10,7 @@ module.exports = {
         const displayname = interaction.user.displayName;
         const id = interaction.user.id
 
-        // const categoryId = '1315779992915017738';
-        const categoryId = '1336225429857636352';
+        const categoryId = '1315779992915017738';
 
         try {
             const category = await interaction.guild.channels.fetch(categoryId);
@@ -34,16 +33,16 @@ module.exports = {
 
             const newChannel = await interaction.guild.channels.create({
                 name: `ticket-${displayname}`,
-                type: 0, // Utilisation correcte du type pour un canal de texte (GUILD_TEXT)
+                type: 0,
                 parent: categoryId,
                 permissionOverwrites: [
                     {
                         id: interaction.guild.id,
-                        deny: [PermissionsBitField.Flags.ViewChannel], // Utilisation correcte de PermissionsBitField
+                        deny: [PermissionsBitField.Flags.ViewChannel],
                     },
                     {
                         id: interaction.user.id,
-                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages], // Utilisation correcte de PermissionsBitField
+                        allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
                     },
                 ],
             });
@@ -51,7 +50,7 @@ module.exports = {
             const embedSuccess = new EmbedBuilder()
                 .setColor('#0004ff')
                 .setTitle(`Ticket de ${displayname}`)
-                .setDescription(`Bonjour <@${id}>, votre ticket a été créé avec succès. Un membre de l'équipe de [Ecloe Directe Plus](https://ecole-directe.plus) viendra vous aider dès que possible.`)
+                .setDescription(`Bonjour <@${id}>, votre ticket a été créé avec succès. Un membre de l'équipe de [Ecole Directe Plus](https://ecole-directe.plus) viendra vous aider dès que possible.`)
                 .setTimestamp()
                 .setAuthor({
                     name: 'Ecole-Directe-Plus',

@@ -47,10 +47,10 @@ const handleCommandsPermissions = async (Client, interaction) => {
 
 const handleComponents = async (Client, interaction) => {
     if (interaction.isButton()) {
-        // Gérer les interactions des boutons
+
         if (interaction.customId === 'create-ticket') {
-            // Appeler la fonction de gestion du bouton pour créer un ticket
-            await handleButtonClick(interaction);  // Assure-toi que cette fonction est correctement définie dans ton fichier de gestion des tickets
+
+            await handleButtonClick(interaction);
         } else {
             const button = Client.buttons.get(interaction.customId);
             if (!button) return interaction.reply("Ce bouton n'existe pas");
