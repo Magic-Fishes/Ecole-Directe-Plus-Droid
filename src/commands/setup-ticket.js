@@ -25,7 +25,6 @@ module.exports = {
             .setColor('#0004ff')
             .setTitle('Système de Ticket')
             .setDescription('Cliquez sur le bouton ci-dessous pour créer un ticket. Un membre de notre équipe viendra vous aider dès que possible.')
-            .setTimestamp()
             .setAuthor({
                 name: 'Ecole-Directe-Plus',
                 iconURL: 'https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png',
@@ -33,7 +32,11 @@ module.exports = {
             });
 
         // Envoyer le message avec l'embed et le bouton
-        await interaction.reply({
+        const channel = interaction.channel
+
+        await interaction.reply({ content: 'Le message des tickets a été setup ici !!!', ephemeral: true })
+
+        await channel.send({
             embeds: [embed],
             components: [row]
         });
@@ -92,7 +95,6 @@ module.exports.handleButtonClick = async (interaction) => {
                     { name: 'Ticket ID', value: `ticket-${displayname}`, inline: true },
                     { name: 'Statut', value: 'Ouvert', inline: true }
                 )
-                .setTimestamp()
                 .setAuthor({
                     name: 'Ecole-Directe-Plus',
                     iconURL: 'https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png',
@@ -103,19 +105,20 @@ module.exports.handleButtonClick = async (interaction) => {
             await newChannel.send({ embeds: [embedSuccess] });
 
             // Envoyer un message à l'utilisateur dans le salon où l'interaction a eu lieu
-            await interaction.channel.send({
+            await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor('#0004ff')
                         .setTitle('Ticket Créé 🎫')
-                        .setDescription(`Le ticket a été créé avec succès sous le nom **ticket-${displayname}** ! 🎉`)
+                        .setDescription(`Le ticket a été créé avec succès [ici](${newChannel.url}) ! 🎉`)
                         .setTimestamp()
                         .setAuthor({
                             name: 'Ecole-Directe-Plus',
                             iconURL: 'https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png',
                             url: 'https://ecole-directe.plus'
                         })
-                ]
+                ],
+                ephemeral: true // Rendre le message éphémère
             });
 
         } catch (error) {
@@ -128,7 +131,6 @@ module.exports.handleButtonClick = async (interaction) => {
                         .setColor('#ff0000')
                         .setTitle('Erreur')
                         .setDescription('Une erreur est survenue lors de la création du ticket.')
-                        .setTimestamp()
                         .setAuthor({
                             name: 'Ecole-Directe-Plus',
                             iconURL: 'https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png',

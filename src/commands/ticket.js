@@ -64,7 +64,7 @@ module.exports = {
             const embedReply = new EmbedBuilder()
                 .setColor('#0004ff')
                 .setTitle('Ticket Créé 🎫')
-                .setDescription(`Le ticket a été créé avec succès sous le nom **ticket-${displayname}** ! 🎉`)
+                .setDescription(`Le ticket a été créé avec succès [ici](${newChannel.url}) ! 🎉`)
                 .setTimestamp()
                 .setAuthor({
                     name: 'Ecole-Directe-Plus',
@@ -72,7 +72,7 @@ module.exports = {
                     url: 'https://ecole-directe.plus'
                 });
 
-            await interaction.reply({ embeds: [embedReply] });
+            await interaction.reply({ embeds: [embedReply], ephemeral: true });
         } catch (error) {
             console.error(error);
 
