@@ -176,6 +176,7 @@ module.exports = {
         content: `🔒 Ticket fermé par <@${userId}>.`,
         ephemeral: false
       });
+      await channel.delete()
     } catch (error) {
       console.error(error);
       await interaction.reply({
