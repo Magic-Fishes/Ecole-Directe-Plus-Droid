@@ -8,6 +8,7 @@ const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const version = packageData.version;
 const as_de_pique = '<@744177952346079253>';
 const ewalwi = '<@899703183520182322>'
+const théo = '<@1326235827541381180>'
 
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
             .setDescription('Les informations me concernant :')
             .addFields(
                 { name: 'Nom :', value: 'Ecole-Directe-Plus-Droid', inline: true },
-                { name: 'Développeurs :', value: 'Mes développeurs sont : ' + as_de_pique + ' et ' + ewalwi + ' ! 🤖' },
+                { name: 'Développeurs :', value: 'Mes développeurs sont : ' + théo + ', ' +  as_de_pique + ' et ' + ewalwi + ' ! 🤖' },
                 { name: 'Version :', value: 'Ma version est la ' + version + ' ! ⚙️' },
                 { name: 'Open-Source :', value: 'Je suis un bot Open-Source, c\'est à dire que tout le mode peut voir mon code source [ici](https://github.com/Magic-Fishes/Ecole-Directe-Plus-Droid/) !' },
             )
