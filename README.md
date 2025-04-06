@@ -9,6 +9,7 @@ Canard Droïd is the new **Discord bot** of **Ecole Directe Plus** platform!
 - 100% automatic moderation to prevent suspicious behaviors
 - All Ecole Directe Plus statistics, member count, daily usage, best platforms, ...
 - Beautiful welcome message sent to new users
+- Own easy to use ticket system available to all members
 - Easy panel to moderate more specifically
 - Do announcements in one command with custom embed!
 - A lot of other things...!
