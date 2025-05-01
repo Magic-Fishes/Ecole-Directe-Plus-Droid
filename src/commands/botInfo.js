@@ -26,7 +26,7 @@ module.exports = {
                 { name: 'Nom :', value: 'Ecole-Directe-Plus-Droid', inline: true },
                 { name: 'Développeurs :', value: 'Mes développeurs sont : ' + as_de_pique + ', ' + ewalwi + ' et ' + théo + ' ! 🤖' },
                 { name: 'Version :', value: 'Ma version est la ' + version + ' ! ⚙️' },
-                { name: 'Open-Source :', value: 'Je suis un bot Open-Source, c\'est à dire que tout le mode peut voir mon code source [ici](https://github.com/Magic-Fishes/Ecole-Directe-Plus-Droid/) !' },
+                { name: 'Open-Source :', value: 'Je suis un bot Open-Source, c\'est à dire que tout le monde peut voir mon code source [ici](https://github.com/Magic-Fishes/Ecole-Directe-Plus-Droid/) !' },
             )
             .setAuthor({
                 name: 'Ecole-Directe-Plus',
