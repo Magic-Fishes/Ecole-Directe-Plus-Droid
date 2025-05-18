@@ -76,9 +76,6 @@ module.exports = {
         { id: config.real.mod_role, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages] }
       ];
 
-      config.real.bot_devs.forEach(botDevId => {
-        permissions.push({ id: botDevId, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages] });
-      });
 
       const newChannel = await interaction.guild.channels.create({
         name: `ticket-${displayname}`,
