@@ -50,22 +50,7 @@ module.exports = {
         });
       }
 
-      // Ajoute les bot devs
-      for (const botDevId of config.real.bot_devs) {
-        // Essaye de fetch le membre pour s'assurer qu'il est en cache
-        const botDevMember = await interaction.guild.members.fetch(botDevId).catch(() => null);
-        if (botDevMember) {
-          permissions.push({
-            id: botDevMember.id,
-            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
-          });
-        } else {
-          permissions.push({
-            id: botDevId,
-            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]
-          });
-        }
-      }
+
 
       // Crée le salon du ticket
       const newChannel = await interaction.guild.channels.create({
