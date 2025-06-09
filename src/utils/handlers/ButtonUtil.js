@@ -1,4 +1,5 @@
 const { glob } = require("glob");
+const logger = require("../../helpers/logger");
 const ctx = new (require("../../global/context"))();
 
 module.exports = async (Client) => {
@@ -9,7 +10,7 @@ module.exports = async (Client) => {
         );
 
         if (!button.name) {
-            console.log(
+            logger.error(
                 `[BTN] - Couldn't load button: No name - File: ${buttonFile}`
             );
             return;

@@ -1,4 +1,5 @@
 const { glob } = require("glob");
+const logger = require("../../helpers/logger");
 const ctx = new (require("../../global/context"))();
 
 module.exports = async (Client) => {
@@ -12,7 +13,7 @@ module.exports = async (Client) => {
             );
 
             if (!selectMenu.name)
-                return console.log(
+                return logger.error(
                     `[SLC] - Couldn't load selector : Typeerror (or no name) - File : ${eventFile}`
                 );
 

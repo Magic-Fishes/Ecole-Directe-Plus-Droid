@@ -1,5 +1,8 @@
 const { EmbedBuilder } = require("discord.js");
 
+const fs = require("fs");
+const path = require("path");
+
 module.exports = {
     name: "dev-ping",
     description:
@@ -14,9 +17,6 @@ module.exports = {
         const activeDevRole = interaction.guild.roles.cache.find(
             (role) => role.id === 1280907843238760451
         );
-
-        const fs = require("fs");
-        const path = require("path");
         const embedData = JSON.parse(
             fs.readFileSync(
                 path.join(__dirname, "../embeds/devPing.json"),

@@ -1,4 +1,5 @@
 const { glob } = require("glob");
+const logger = require("../../helpers/logger");
 const ctx = new (require("../../global/context"))();
 
 const eventList = [
@@ -87,7 +88,7 @@ module.exports = async (Client) => {
         );
 
         if (!eventList.includes(event.name) || !event.name) {
-            return console.log(
+            return logger.error(
                 `[EVT] - Couldn't load Event : This event may not exist or has no name - File : ${eventFile}`
             );
         }

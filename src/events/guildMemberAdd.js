@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const ctx = new (require("../global/context"))();
 const jsonConfig = require("../../config.json");
+const logger = require("../helpers/logger");
 module.exports = {
     name: Events.GuildMemberAdd,
     async execute(client, guildMember) {
@@ -77,7 +78,7 @@ module.exports = {
                 });
             }, 1000);
         } catch (error) {
-            console.error(
+            logger.error(
                 `Action denied: couldn't send a message to ${client.user.tag}`
             );
         }

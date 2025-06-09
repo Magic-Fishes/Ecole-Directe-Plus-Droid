@@ -1,4 +1,5 @@
 const WebSocket = require("ws");
+const logger = require("../helpers/logger");
 require("dotenv").config({ path: "../.env" });
 
 /* eslint-disable camelcase */
@@ -204,26 +205,21 @@ const handleWebSocket = (url = process.env.SOCKET_URL) => {
         const socket = new WebSocket(url);
 
         socket.addEventListener("message", async (event) => {
-            // try {
             const rawData = event.data;
             const data = await JSON.parse(rawData);
 
             const sortedObject = await sortJSON(data);
 
             resolve(sortedObject);
-            // } catch (error) {
-            //     reject(
-            //         new Error("Failed to parse message data: " + error.message)
-            //     );
-            // }
         });
 
         socket.addEventListener("close", (event) => {
+            logger.error("Connection to socket was aborted");
             reject(new Error("Connection to socket was aborted"));
         });
 
         socket.addEventListener("error", (error) => {
-            console.error("[!] WebSocket error: ", error);
+            logger.error("[!] WebSocket error: ", error);
             // reject(new Error("WebSocket error: " + error.message));
         });
     });

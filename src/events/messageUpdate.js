@@ -2,6 +2,7 @@ const { handleWebSocket } = require("../utils/webServer");
 const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
 const { ActivityType, Events } = require("discord.js");
 const jsonConfig = require("../../config.json");
+const logger = require("../helpers/logger");
 
 const statisticsMessage = async (
     client,
@@ -171,12 +172,16 @@ const statisticsMessage = async (
 module.exports = {
     name: Events.MessageUpdate,
     async execute(client, oldMessage, newMessage) {
-        statisticsMessage(
-            client,
-            oldMessage,
-            newMessage,
-            jsonConfig.stats_channel
-        );
+        try {
+            statisticsMessage(
+                client,
+                oldMessage,
+                newMessage,
+                jsonConfig.stats_channel
+            );
+        } catch (err) {
+            logger.error("statistics can't start", err);
+        }
     },
 };
 

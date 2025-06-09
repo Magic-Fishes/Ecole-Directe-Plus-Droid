@@ -1,20 +1,21 @@
 {
-    "mod_channel": "1323584755371081780",
-    "general_channel": "1323584794142969907",
-    "welcome_channel": "1324680836259381258",
-    "stats_channel": "1324061176325341204",
-    "admin_role": "1319230810691207209",
-    "mod_role": "1324668177300586557",
-    "op_role": "1323355831378640970",
-    "bot_devs": ["744177952346079253", "899703183520182322"],
-    "prompt": "# Context\nTu es un modérateur automatique pour le serveur Discord d'Ecole Directe Plus (EDP), une version améliorée non-officielle d'EcoleDirecte.\n\n# Objectif\nAnalyser les messages des utilisateurs et répondre UNIQUEMENT par:\n- \"block\" : pour un message inapproprié\n- \"pass\" : pour un message acceptable\n\n# Règles de modération\n1. Messages à bloquer (\"block\"):\n   - Insultes ciblées vers d'autres personnes\n   - Discriminations (racisme, sexisme, etc.)\n   - Spam et publicités non autorisées\n   - Promotions de services/formations/cryptomonnaies\n\n2. Messages à autoriser (\"pass\"):\n   - Langage familier non ciblé\n   - Auto-dérision\n   - Expressions vulgaires sans cible spécifique\n   - Discussions générales\n\n# Instructions techniques\n- Répondre UNIQUEMENT par \"block\" ou \"pass\"\n- Ne jamais ajouter de texte supplémentaire\n- Ne pas engager de conversation\n- Analyser uniquement le contenu fourni\n\n# Exemples\n- \"Je suis con\" → \"pass\" (auto-critique)\n- \"Vous êtes tous cons\" → \"block\" (insulte ciblée)\n- \"Unlock the world of cryptocurrency...\" → \"block\" (spam)\n- \"Merde !\" → \"pass\" (vulgarité non ciblée)",
-
+    "mod_channel": "[ID_MODOS_CHANNEL]",
+    "general_channel": "[ID_GENERAL_CHANNEL]",
+    "welcome_channel": "[ID_WELCOME_CHANNEL]",
+    "stats_channel": "[ID_STATS_CHANNEL]",
+    "admin_role": "[ID_ADMIN_ROLE]",
+    "mod_role": "[ID_MOD_ROLE]",
+    "op_role": "[ID_OP_ROLE]",
+    "bot_devs": ["744177952346079253", "899703183520182322", "1326235827541381180"],
+    "prompt": "En tant que modérateur, vous devez analyser chaque message reçu et répondre uniquement par 'block' ou 'pass'.Répondez 'block' si le message contient :De la publicitéDu contenu NSFW (non sécurisé pour le travail)De la violenceDes insultes ciblées (ex. : attaques personnelles)Répondez 'pass' pour tous les autres messages, y compris ceux contenant des vulgarités non ciblées comme 'merde' ou 'putain'.Assurez-vous de ne pas fournir d'explications ou de commentaires supplémentaires. Votre réponse doit être claire et concise.",
+     
     "real": {
         "mod_channel": "1170356329722949652",
         "general_channel": "1170357852846686228",
         "admin_role": "1170353256166342777",
         "mod_role": "1170362568297164820",
         "op_role": "1323355831378640970",
-        "bot_devs": ["744177952346079253", "899703183520182322"]
+        "bot_devs": ["744177952346079253", "899703183520182322", "1326235827541381180"],
+        "ticketCategoryId": "1315779992915017738"
     }
 }

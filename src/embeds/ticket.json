@@ -1,0 +1,60 @@
+{
+  "setup": {
+    "setupReply": {
+      "content": "Le message des tickets a été setup ici !!!",
+      "ephemeral": true
+    },
+    "setupEmbed": {
+      "color": "#0004ff",
+      "title": "Système de Ticket",
+      "description": "Cliquez sur le bouton ci-dessous pour créer un ticket. Un membre de notre équipe viendra vous aider dès que possible.",
+      "author": {
+        "name": "Ecole-Directe-Plus",
+        "iconURL": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png",
+        "url": "https://ecole-directe.plus"
+      }
+    },
+    "ticketCreatedEmbed": {
+      "color": "#0004ff",
+      "title": "Ticket Créé 🎫",
+      "description": "Le ticket a été créé avec succès [ici]({channelUrl}) ! 🎉",
+      "author": {
+        "name": "Ecole-Directe-Plus",
+        "iconURL": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png",
+        "url": "https://ecole-directe.plus"
+      }
+    },
+    "ticketErrorEmbed": {
+      "color": "#ff0000",
+      "title": "Erreur",
+      "description": "Une erreur est survenue lors de la création du ticket.",
+      "author": {
+        "name": "Ecole-Directe-Plus",
+        "iconURL": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png",
+        "url": "https://ecole-directe.plus"
+      }
+    }
+  },
+  "ticket": {
+    "ticketEmbed": {
+      "color": "#0004ff",
+      "title": "Ticket de {username}",
+      "description": "Bonjour <@{userId}>, votre ticket a été créé avec succès. Un membre de l'équipe de [Ecole Directe Plus](https://ecole-directe.plus) viendra vous aider dès que possible.",
+      "author": {
+        "name": "Ecole-Directe-Plus",
+        "iconURL": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png",
+        "url": "https://ecole-directe.plus"
+      }
+    },
+    "ticketCloseEmbed": {
+      "color": "#ffcc00",
+      "title": "Confirmer la fermeture",
+      "description": "Êtes-vous sûr de vouloir fermer ce ticket ?\nCette action est irréversible.",
+      "author": {
+        "name": "Ecole-Directe-Plus",
+        "iconURL": "https://pbs.twimg.com/profile_images/1680302515097673729/x1cHA0q5_400x400.png",
+        "url": "https://ecole-directe.plus"
+      }
+    }
+  }
+}

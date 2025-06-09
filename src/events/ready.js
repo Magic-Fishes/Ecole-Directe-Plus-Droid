@@ -1,5 +1,5 @@
+const logger = require("../helpers/logger");
 const { setDroidStatus } = require("../utils/handlers/setDroidStatus");
-
 const ctx = new (require("../global/context"))();
 require("dotenv").config();
 
@@ -64,6 +64,9 @@ module.exports = {
         process.env.NODE_ENV === "development"
             ? console.log(`BOT Running in ${process.env.NODE_ENV}`)
             : null;
+
+        // logger
+        logger.info("ready, all done. BOT Running in development");
     },
 };
 
