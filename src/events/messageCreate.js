@@ -8,14 +8,13 @@ const {
 } = require("discord.js");
 const fs = require("fs");
 
-const Groq = require("groq-sdk");
 const path = require("path");
 const ctx = new (require("../global/context"))();
 
 const jsonConfig = require("../../config.json");
 const logger = require("../helpers/logger");
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const openaiApiKey = process.env.OPENAI_API_KEY;
 
 const iaDetectionAndModeration = async (_, message) => {
     if (
@@ -80,35 +79,40 @@ const iaDetectionAndModeration = async (_, message) => {
     const content = message.content.toLowerCase();
 
     let aiDetection = "pass";
-    async function getGroqChatCompletion() {
+    async function getChatCompletion() {
         try {
-            return groq.chat.completions.create({
-                messages: [
+            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${openaiApiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: 'deepseek/deepseek-r1-0528:free',
+                    messages: [
                     {
-                        role: "system",
+                        role: 'system',
                         content: jsonConfig.prompt,
                     },
                     {
-                        role: "user",
+                        role: 'user',
                         content: content,
                     },
-                ],
-                model: "llama3-70b-versatile",
-                temperature: 0,
-                /* eslint-disable camelcase */
-                max_tokens: 1024,
-                top_p: 0,
-                /* eslint-enable camelcase */
+                    ],
+                }),
             });
+
+            const data = await response.json();
+            return data;
         } catch (error) {
             logger.error(
                 "No tokens left for current model",
-                error // Je mets ça comme ça mais je ne pense pas que le modèle puisse se vider de ses tokens si facilement -- ewalwi
+                error 
             );
         }
     }
 
-    const chatCompletion = await getGroqChatCompletion();
+    const chatCompletion = await getChatCompletion();
     aiDetection = chatCompletion.choices[0]?.message?.content;
 
     if (aiDetection === "block") {
